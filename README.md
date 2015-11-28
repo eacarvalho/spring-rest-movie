@@ -1,5 +1,5 @@
 # Introduction
-Project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
+The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 # Technologies
 Uses spring-boot 1.3, spring-mvc, spring-data (querydsl) and lombok accessing NoSQL MongoDB 3.0.6. 
