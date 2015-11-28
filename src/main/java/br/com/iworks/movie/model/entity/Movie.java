@@ -28,13 +28,14 @@ public class Movie {
     private String title;
     private String originalTitle;
     private Integer duration;
+    private String type;
     private String category;
     private Date date;
 
     @NotNull(message = "{validation.notnull}")
-    private String description;
+    private String plot;
     private String directors;
-    private String rating;
+    private int rating;
 
     @JsonSerialize(using = JsonDateSerializer.class)
     public Date getDate() {
