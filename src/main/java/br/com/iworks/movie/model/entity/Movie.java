@@ -1,6 +1,9 @@
 package br.com.iworks.movie.model.entity;
 
 import br.com.iworks.movie.infra.util.JsonDateSerializer;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = Movie.COLLECTION_NAME)
 @Data
@@ -28,8 +32,10 @@ public class Movie {
     private String tittle;
     private String originalTitle;
     private Integer duration;
-    private String type;
-    private String category;
+
+    @NotNull(message = "{validation.notnull}")
+    private TypeEnum type;
+    private List<GenreEnum> genres;
     private Date date;
 
     @NotNull(message = "{validation.notnull}")
@@ -40,5 +46,20 @@ public class Movie {
     @JsonSerialize(using = JsonDateSerializer.class)
     public Date getDate() {
         return date;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.OBJECT)
+    public void setType(TypeEnum type) {
+        this.type = type;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    public TypeEnum getType() {
+        return type;
+    }
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    public List<GenreEnum> getGenres() {
+        return genres;
     }
 }

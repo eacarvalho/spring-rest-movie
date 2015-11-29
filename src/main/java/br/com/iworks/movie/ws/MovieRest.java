@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movie")
+@RequestMapping("/movies")
 public class MovieRest {
 
     @Autowired
