@@ -1,1 +1,3 @@
 http://www.omdbapi.com/
+https://travis-ci.org/eacarvalho/spring-rest-movie
+spring-actuator
