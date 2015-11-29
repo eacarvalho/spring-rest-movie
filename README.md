@@ -2,7 +2,10 @@
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 # Technologies
-Uses spring-boot 1.3, spring-mvc, spring-data (querydsl) and lombok accessing NoSQL MongoDB 3.0.6. 
+Built using maven, java 8, spring-boot 1.3, spring-mvc, spring-data, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
+
+# Travis CI (Continuous Integration)
+- https://travis-ci.org/eacarvalho/spring-rest-movie
 
 # Architecture
 3 layers (controller, service, repository).

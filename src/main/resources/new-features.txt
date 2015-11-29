@@ -1,2 +1,2 @@
 http://www.omdbapi.com/
-https://travis-ci.org/profile/eacarvalho
+https://travis-ci.org/eacarvalho/spring-rest-movie
