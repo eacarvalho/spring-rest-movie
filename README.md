@@ -5,7 +5,7 @@ The project spring-rest-movie provides REST services for create, update, delete 
 Built using maven, java 8, spring-boot 1.3, spring-mvc, spring-data, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
 # Travis CI (Continuous Integration)
-- https://travis-ci.org/eacarvalho/spring-rest-movie
+Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
 
 # Architecture
 3 layers (controller, service, repository).
@@ -16,23 +16,27 @@ mvn spring-boot:run -Dserver.port=8080
 # How access the project
 http://localhost:8080/
 
-- POST  http://localhost:8080/movie
-- GET   http://localhost:8080/movie
-- GET   http://localhost:8080/movie/1
+- POST    http://localhost:8080/movies
+- PUT     http://localhost:8080/movies/1
+- GET     http://localhost:8080/movies
+- GET     http://localhost:8080/movies/1
+- DELETE  http://localhost:8080/movies/1
+- GET     http://localhost:8080/types
+- GET     http://localhost:8080/genres
 
-Sample JSON POST:
+Sample Movie JSON POST:
 
 ```
 {
-  "title":"007",
-  "originalTitle":"007",
+  "title":"Taken",
+  "originalTitle":"Taken",
   "duration":116,
   "type":"Movie",
-  "category:"Action",
+  "genres": ["Action", "Thiller"],
   "date":"2015-11-28T18:25:43Z",
   "plot":"Write down your description here",
   "directors":null,
-  "rating":3
+  "rating":5
 }
 ```
 
