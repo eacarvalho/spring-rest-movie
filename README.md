@@ -2,7 +2,7 @@
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 # Technologies
-Built using maven, java 8, spring-boot 1.3, spring-mvc, spring-data, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
+Built using maven, java 8, spring-boot 1.3, spring-boot-actuator, spring-mvc, spring-data, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
 # Travis CI (Continuous Integration)
 Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
@@ -39,6 +39,18 @@ Sample Movie JSON POST:
   "rating":5
 }
 ```
+
+# How check health of the app (actuator)
+- HEALTH      http://localhost:8080/health
+- INFO        http://localhost:8080/info
+- AUTOCONFIG  http://localhost:8080/autoconfig
+- BEANS       http://localhost:8080/beans
+- CONFIGPROPS http://localhost:8080/configprops
+- DUMP        http://localhost:8080/dump
+- ENV         http://localhost:8080/env
+- METRICS     http://localhost:8080/metrics
+- MAPPINGS    http://localhost:8080/mappings
+- TRACE       http://localhost:8080/trace 
 
 # Setting up the mongodb
 1. Start mongodb 3.0.6 as "mongod --config /usr/local/etc/mongod.conf"
