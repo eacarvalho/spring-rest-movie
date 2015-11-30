@@ -7,9 +7,6 @@ Built using maven, java 8, spring-boot 1.3, spring-boot-actuator, spring-mvc, sp
 # Travis CI (Continuous Integration)
 Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
 
-# Architecture
-3 layers (controller, service, repository).
-
 # How start the project
 mvn spring-boot:run -Dserver.port=8080
 
@@ -29,7 +26,7 @@ Sample Movie JSON POST:
 ```
 {
   "tittle":"Taken",
-  "originalTitle":"Taken",
+  "originalTittle":"Taken",
   "duration":116,
   "type":"Movie",
   "genres": ["Action"],
@@ -57,6 +54,8 @@ Sample Movie JSON POST:
 3. Create database and user as following:
 
 ```
+use movie
+
 db.createUser(
   {
     user: "mongo_movie",
