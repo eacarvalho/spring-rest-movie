@@ -57,7 +57,7 @@ public class Movie {
     private int rating;
 
     @JsonSerialize(using = JsonDateSerializer.class)
-    public Date getDate() {
+    public Date getReleasedDate() {
         return releasedDate;
     }
 

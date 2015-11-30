@@ -105,6 +105,37 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+        <profile>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <id>local</id>
+            <properties>
+                <environment>local</environment>
+                <mongo.host>127.0.0.1</mongo.host>
+                <mongo.port>27017</mongo.port>
+                <mongo.database>movie</mongo.database>
+                <mongo.username>mongo_movie</mongo.username>
+                <mongo.password>123</mongo.password>
+            </properties>
+        </profile>
+        <profile>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <id>integrated-test</id>
+            <properties>
+                <environment>local</environment>
+                <mongo.host>127.0.0.1</mongo.host>
+                <mongo.port>27017</mongo.port>
+                <mongo.database>movie-itest</mongo.database>
+                <mongo.username>mongo_movie</mongo.username>
+                <mongo.password>123</mongo.password>
+            </properties>
+        </profile>
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
