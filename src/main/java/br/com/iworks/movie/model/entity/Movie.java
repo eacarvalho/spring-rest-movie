@@ -9,9 +9,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
+import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +21,9 @@ import java.util.List;
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
+@CompoundIndexes({
+        @CompoundIndex(name = "code_movie_idx", def = "{'code': 1}", unique = true)
+})
 public class Movie {
 
     public static final String COLLECTION_NAME = "movies";
@@ -31,12 +36,20 @@ public class Movie {
     @NotNull(message = "{validation.notnull}")
     private String tittle;
     private String originalTitle;
+
+    @Max(value = 500, message = "{validation.size}")
+    @Min(value = 0, message = "{validation.size}")
     private Integer duration;
 
     @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
     private List<GenreEnum> genres;
-    private Date date;
+    private Date registrationDate;
+    private Date releasedDate;
+
+    @Max(value = 9999, message = "{validation.size}")
+    @Min(value = 1800, message = "{validation.size}")
+    private Integer year;
 
     @NotNull(message = "{validation.notnull}")
     private String plot;
@@ -45,7 +58,7 @@ public class Movie {
 
     @JsonSerialize(using = JsonDateSerializer.class)
     public Date getDate() {
-        return date;
+        return releasedDate;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
