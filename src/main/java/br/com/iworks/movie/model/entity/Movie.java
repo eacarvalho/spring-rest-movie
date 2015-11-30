@@ -35,7 +35,7 @@ public class Movie {
 
     @NotNull(message = "{validation.notnull}")
     private String tittle;
-    private String originalTitle;
+    private String originalTittle;
 
     @Max(value = 500, message = "{validation.size}")
     @Min(value = 0, message = "{validation.size}")

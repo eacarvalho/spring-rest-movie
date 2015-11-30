@@ -1,4 +1,4 @@
-package br.com.iworks.movie;
+package br.com.iworks.movie.app;
 
 import br.com.iworks.movie.app.Application;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
-public class SpringRestMovieApplicationTests {
+public class ApplicationTests {
 
     @Test
     public void contextLoads() {

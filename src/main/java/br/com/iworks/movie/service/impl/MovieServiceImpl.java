@@ -2,31 +2,25 @@ package br.com.iworks.movie.service.impl;
 
 import br.com.iworks.movie.dto.MovieDTO;
 import br.com.iworks.movie.exceptions.MovieException;
-import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.model.entity.QMovie;
+import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.service.CounterService;
 import br.com.iworks.movie.service.MovieService;
 import com.mysema.query.types.expr.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.ArrayList;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -39,11 +33,16 @@ public class MovieServiceImpl implements MovieService {
     private CounterService counterService;
 
     @Autowired
+    private Validator validator;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Override
     public Movie create(Movie movie) {
         try {
+            this.validateMovie(movie);
+
             movie.setCode(counterService.getNextSequence(Movie.COLLECTION_NAME));
             movie.setRegistrationDate(Calendar.getInstance().getTime());
             movie = repo.save(movie);
@@ -61,15 +60,33 @@ public class MovieServiceImpl implements MovieService {
         Movie movieDatabase = this.read(code);
 
         if (movieDatabase != null) {
-            movie.setId(movieDatabase.getId());
-            movie.setCode(movieDatabase.getCode());
 
-            repo.save(movie);
+            try {
+                this.validateMovie(movie);
 
-            return movie;
+                movie.setId(movieDatabase.getId());
+                movie.setCode(movieDatabase.getCode());
+                repo.save(movie);
+
+                return movie;
+            } catch (Exception e) {
+                throw new MovieException(messageSource.getMessage("movie.save.error",
+                        new Object[]{movie.getTittle(), e.getMessage()}, LocaleContextHolder
+                                .getLocale()));
+            }
         }
 
         return null;
+    }
+
+    private void validateMovie(Movie movie) {
+        Set<ConstraintViolation<Movie>> errors = validator.validate(movie);
+
+        if (!CollectionUtils.isEmpty(errors)) {
+            String error = errors.stream().map(err -> err.getPropertyPath() + " : " + err.getMessage()).collect
+                    (Collectors.joining(" | "));
+            throw new MovieException(error);
+        }
     }
 
     @Override
