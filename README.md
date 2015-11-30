@@ -28,11 +28,11 @@ Sample Movie JSON POST:
 
 ```
 {
-  "title":"Taken",
+  "tittle":"Taken",
   "originalTitle":"Taken",
   "duration":116,
   "type":"Movie",
-  "genres": ["Action", "Thiller"],
+  "genres": ["Action"],
   "date":"2015-11-28T18:25:43Z",
   "plot":"Write down your description here",
   "directors":null,
