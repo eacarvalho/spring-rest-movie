@@ -33,9 +33,8 @@ Sample Movie JSON POST:
   "duration":116,
   "type":"Movie",
   "genres": ["Action"],
-  "date":"2015-11-28T18:25:43Z",
+  "releasedDate":"2015-11-28T18:25:43Z",
   "plot":"Write down your description here",
-  "directors":null,
   "rating":5
 }
 ```
