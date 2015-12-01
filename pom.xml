@@ -113,9 +113,9 @@
             <id>local</id>
             <properties>
                 <environment>local</environment>
-                <mongo.host>ds063833.mongolab.com</mongo.host>
-                <mongo.port>63833</mongo.port>
-                <mongo.database>heroku_bzgk16lb</mongo.database>
+                <mongo.host>127.0.0.1</mongo.host>
+                <mongo.port>27017</mongo.port>
+                <mongo.database>movie</mongo.database>
                 <mongo.username>mongo_movie</mongo.username>
                 <mongo.password>123</mongo.password>
             </properties>
