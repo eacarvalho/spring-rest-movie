@@ -4,6 +4,7 @@ import br.com.iworks.movie.infra.util.JsonDateSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,6 +25,7 @@ import java.util.List;
 @CompoundIndexes({
         @CompoundIndex(name = "code_movie_idx", def = "{'code': 1}", unique = true)
 })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
 
     public static final String COLLECTION_NAME = "movies";
