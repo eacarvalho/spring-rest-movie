@@ -43,7 +43,6 @@ Sample Movie JSON POST:
 - BEANS       http://localhost:8080/beans
 - CONFIGPROPS http://localhost:8080/configprops
 - DUMP        http://localhost:8080/dump
-- ENV         http://localhost:8080/env
 - METRICS     http://localhost:8080/metrics
 - MAPPINGS    http://localhost:8080/mappings
 - TRACE       http://localhost:8080/trace 
