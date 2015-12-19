@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>br.com.iworks</groupId>
-    <artifactId>movie</artifactId>
+    <artifactId>spring-rest-movie</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
@@ -27,6 +27,7 @@
         <mongo.driver.version>2.13.3</mongo.driver.version>
         <lombok.version>1.16.6</lombok.version>
         <apache.commons.version>3.3.2</apache.commons.version>
+        <io.springfox.version>2.2.2</io.springfox.version>
     </properties>
 
     <dependencies>
@@ -54,6 +55,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${io.springfox.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${io.springfox.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
