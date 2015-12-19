@@ -2,7 +2,7 @@
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 # Technologies
-Built using maven, java 8, spring-boot 1.3, spring-boot-actuator, spring-mvc, spring-data, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
+Built using maven, java 8, spring-boot 1.3, spring-boot-actuator, spring-mvc, spring-data, swagger 2, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
 # Travis CI (Continuous Integration)
 Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
@@ -35,6 +35,11 @@ Sample Movie JSON POST:
   "rating":5
 }
 ```
+
+# API RESTful
+Using Swagger 2 to document the RESTful API, to see the API just access
+
+- http://localhost:8080/swagger-ui.html
 
 # How check health of the app (actuator)
 - HEALTH      http://localhost:8080/health
