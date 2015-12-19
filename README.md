@@ -37,9 +37,7 @@ Sample Movie JSON POST:
 ```
 
 # API RESTful
-Using Swagger 2 to document the RESTful API, to see the API just access
-
-- http://localhost:8080/swagger-ui.html
+Using Swagger 2 to document the RESTFul API accessing http://localhost:8080/swagger-ui.html
 
 # How check health of the app (actuator)
 - HEALTH      http://localhost:8080/health
