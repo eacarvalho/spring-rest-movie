@@ -125,8 +125,7 @@ public class MovieRest {
             @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path")
     })
     @ResponseBody()
-    @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> delete(@PathVariable Long code) {
         Movie movie = service.delete(code);
 
