@@ -4,6 +4,7 @@ import br.com.iworks.movie.infra.util.JsonDateSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
@@ -14,7 +15,9 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +34,7 @@ public class Movie {
     public static final String COLLECTION_NAME = "movies";
 
     @Id
+    @JsonIgnore
     private String id;
 
     private Long code;

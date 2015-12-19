@@ -91,12 +91,12 @@ public class Swagger2Configuration {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Spring REST Movie with Swagger")
-                .description("Spring REST Movie with Swagger")
-                        // .termsOfServiceUrl("http://www-03.ibm.com/software/sla/sladb.nsf/sla/bm?Open")
-                .contact("iWorks")
-                        // .license("Apache License Version 2.0")
-                        // .licenseUrl("https://github.com/IBM-Bluemix/news-aggregator/blob/master/LICENSE")
+                .title("API RESTFul for Movie")
+                .description("Documentation using Swagger 2 built on Spring API RESTFul")
+                .termsOfServiceUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+                .contact("iWorks.com")
+                .license("Apache License Version 2.0")
+                .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
                 .version("1.0")
                 .build();
     }

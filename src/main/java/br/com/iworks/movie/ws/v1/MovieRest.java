@@ -24,15 +24,37 @@ public class MovieRest {
     @Autowired
     private MovieService service;
 
+    @ApiOperation(value = "Create a new movie")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found"),
+            @ApiResponse(code = 409, message = "Conflict")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "movie", value = "Movie's json", required = false, dataType = "Movie", paramType = "body")
+    })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public Movie create(@RequestBody @NotNull @Valid Movie movie) {
         return service.create(movie);
     }
 
+    @ApiOperation(value = "Update a movie")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path"),
+            @ApiImplicitParam(name = "movie", value = "Movie's json", required = false, dataType = "Movie", paramType = "body")
+    })
     @ResponseBody
-    @RequestMapping(value = "/{code}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{code}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> update(@Valid @PathVariable Long code, @RequestBody @NotNull @Valid Movie movie) {
         Movie movieReturned = service.update(code, movie);
 
@@ -47,12 +69,13 @@ public class MovieRest {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
-            @ApiResponse(code = 400, message = "Bad Request 12212")})
+            @ApiResponse(code = 400, message = "Bad Request")})
     @ApiImplicitParams({
             @ApiImplicitParam(name = "tittle", value = "Movie's tittle", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "originalTittle", value = "Movie's original tittle", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "type", value = "Movie's type", required = false, dataType = "string", paramType = "query")
     })
+    @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> list(WebRequest webRequest) {
         MovieDTO movieDTO = new MovieDTO();
@@ -72,8 +95,16 @@ public class MovieRest {
         return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Get a movie")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path")
+    })
     @ResponseBody()
-    @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> read(@PathVariable("code") @NotNull Long code) {
         Movie movie = service.read(code);
 
@@ -84,8 +115,18 @@ public class MovieRest {
         return new ResponseEntity<Movie>(movie, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Delete a movie")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path")
+    })
     @ResponseBody()
-    @RequestMapping(value = "/{code}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Movie> delete(@PathVariable Long code) {
         Movie movie = service.delete(code);
 
