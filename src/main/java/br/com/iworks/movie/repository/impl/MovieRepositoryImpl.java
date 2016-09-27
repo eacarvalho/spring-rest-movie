@@ -1,8 +1,11 @@
 package br.com.iworks.movie.repository.impl;
 
-import br.com.iworks.movie.dto.MovieDTO;
-import br.com.iworks.movie.model.entity.Movie;
-import br.com.iworks.movie.repository.MovieRepositoryCustom;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -11,18 +14,14 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
-
-import static org.springframework.data.mongodb.core.query.Criteria.where;
+import br.com.iworks.movie.dto.MovieDTO;
+import br.com.iworks.movie.model.entity.Movie;
+import br.com.iworks.movie.repository.MovieRepositoryCustom;
 
 @Repository
 public class MovieRepositoryImpl implements MovieRepositoryCustom {
 
     @Autowired
-    @Named("nsMongoTemplate")
     private MongoOperations mongoOperations;
 
     @Override

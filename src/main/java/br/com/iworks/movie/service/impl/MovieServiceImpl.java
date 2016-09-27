@@ -7,7 +7,6 @@ import br.com.iworks.movie.model.entity.QMovie;
 import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.service.CounterService;
 import br.com.iworks.movie.service.MovieService;
-import com.mysema.query.types.expr.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,6 +20,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
 
 @Service
 @Slf4j

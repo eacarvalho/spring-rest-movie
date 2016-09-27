@@ -1,22 +1,20 @@
 package br.com.iworks.movie.service.impl;
 
-import br.com.iworks.movie.model.entity.Counter;
+import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+import static org.springframework.data.mongodb.core.query.Query.query;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Named;
-
-import static org.springframework.data.mongodb.core.FindAndModifyOptions.options;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
-import static org.springframework.data.mongodb.core.query.Query.query;
+import br.com.iworks.movie.model.entity.Counter;
 
 @Service
 public class CounterServiceImpl implements br.com.iworks.movie.service.CounterService {
 
     @Autowired
-    @Named("nsMongoTemplate")
     private MongoOperations mongoOperations;
 
     @Override

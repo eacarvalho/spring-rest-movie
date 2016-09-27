@@ -1,6 +1,6 @@
 package br.com.iworks.movie.model.entity;
 
-import br.com.iworks.movie.infra.util.JsonDateSerializer;
+import br.com.iworks.movie.config.util.JsonDateSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;

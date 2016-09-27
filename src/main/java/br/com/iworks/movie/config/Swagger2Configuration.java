@@ -1,4 +1,4 @@
-package br.com.iworks.movie.infra;
+package br.com.iworks.movie.config;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
