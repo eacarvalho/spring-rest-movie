@@ -1,9 +1,8 @@
 package br.com.iworks.movie.service;
 
-import br.com.iworks.movie.dto.MovieDTO;
-import br.com.iworks.movie.model.entity.Movie;
-
 import java.util.List;
+
+import br.com.iworks.movie.model.entity.Movie;
 
 public interface MovieService {
 
@@ -13,7 +12,7 @@ public interface MovieService {
 
     List<Movie> list();
 
-    List<Movie> list(MovieDTO movieDTO);
+    List<Movie> list(Movie movie);
 
     Movie read(Long code);
 

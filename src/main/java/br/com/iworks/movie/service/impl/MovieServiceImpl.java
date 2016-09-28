@@ -1,6 +1,21 @@
 package br.com.iworks.movie.service.impl;
 
-import br.com.iworks.movie.dto.MovieDTO;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.model.entity.QMovie;
@@ -8,20 +23,6 @@ import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.service.CounterService;
 import br.com.iworks.movie.service.MovieService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.querydsl.core.types.dsl.BooleanExpression;
 
 @Service
 @Slf4j
@@ -96,8 +97,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> list(MovieDTO movieDTO) {
-        return repo.list(movieDTO);
+    public List<Movie> list(Movie movie) {
+        return repo.list(movie);
     }
 
     @Override

@@ -1,20 +1,35 @@
 package br.com.iworks.movie.ws.v1;
 
-import br.com.iworks.movie.dto.MovieDTO;
-import br.com.iworks.movie.model.entity.Movie;
-import br.com.iworks.movie.service.MovieService;
-import io.swagger.annotations.*;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import br.com.iworks.movie.model.TypeEnum;
+import br.com.iworks.movie.model.entity.Movie;
+import br.com.iworks.movie.service.MovieService;
+import br.com.iworks.movie.ws.v1.assembler.MovieResourceAssembler;
+import br.com.iworks.movie.ws.v1.resource.MovieResource;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/movies")
@@ -24,6 +39,9 @@ public class MovieRest {
     @Autowired
     private MovieService service;
 
+    @Autowired
+    private MovieResourceAssembler movieResourceAssembler;
+
     @ApiOperation(value = "Create a new movie")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created"),
@@ -32,14 +50,18 @@ public class MovieRest {
             @ApiResponse(code = 409, message = "Conflict")
     })
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "movie", value = "Movie's json", required = false, dataType = "Movie", paramType = "body")
+            @ApiImplicitParam(name = "movieResource", value = "Movie's json", required = false, dataType = "MovieResource", paramType = "body")
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Movie create(@RequestBody @NotNull @Valid Movie movie) {
-        return service.create(movie);
+    public ResponseEntity<MovieResource> create(@RequestBody @NotNull @Valid MovieResource movieResource) {
+        Movie movie = movieResourceAssembler.toModel(movieResource);
+
+        return ResponseEntity
+                .ok()
+                .body(movieResourceAssembler.toResource(service.create(movie)));
     }
 
     @ApiOperation(value = "Update a movie")
@@ -50,19 +72,22 @@ public class MovieRest {
     })
     @ApiImplicitParams({
             @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path"),
-            @ApiImplicitParam(name = "movie", value = "Movie's json", required = false, dataType = "Movie", paramType = "body")
+            @ApiImplicitParam(name = "movieResource", value = "Movie's json", required = false, dataType = "MovieResource", paramType = "body")
     })
     @ResponseBody
     @RequestMapping(value = "/{code}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Movie> update(@Valid @PathVariable Long code, @RequestBody @NotNull @Valid Movie movie) {
-        Movie movieReturned = service.update(code, movie);
+    public ResponseEntity<MovieResource> update(@Valid @PathVariable Long code, @RequestBody @NotNull @Valid MovieResource movieResource) {
+        Movie movie = movieResourceAssembler.toModel(movieResource);
+        MovieResource resource = movieResourceAssembler.toResource(service.update(code, movie));
 
-        if (movieReturned == null) {
-            return new ResponseEntity<Movie>(movieReturned, HttpStatus.NO_CONTENT);
+        if (resource == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<Movie>(movieReturned, HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(resource);
     }
 
     @ApiOperation(value = "Get the list of movies")
@@ -77,22 +102,25 @@ public class MovieRest {
     })
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> list(WebRequest webRequest) {
-        MovieDTO movieDTO = new MovieDTO();
+    public ResponseEntity<List<MovieResource>> list(WebRequest webRequest) {
+        MovieResource movieResource = new MovieResource();
 
         if (webRequest != null) {
-            movieDTO.setTittle(webRequest.getParameter("tittle"));
-            movieDTO.setOriginalTitle(webRequest.getParameter("originalTittle"));
-            movieDTO.setType(webRequest.getParameter("type"));
+            movieResource.setTittle(webRequest.getParameter("tittle"));
+            movieResource.setOriginalTittle(webRequest.getParameter("originalTittle"));
+            movieResource.setType(TypeEnum.create(webRequest.getParameter("type")));
         }
 
-        List<Movie> movies = service.list(movieDTO);
+        List<Movie> movies = service.list(movieResourceAssembler.toModel(movieResource));
+        List<MovieResource> resources = movieResourceAssembler.toResources(movies);
 
-        if (CollectionUtils.isEmpty(movies)) {
-            return new ResponseEntity<List<Movie>>(movies, HttpStatus.NO_CONTENT);
+        if (CollectionUtils.isEmpty(resources)) {
+            return new ResponseEntity<>(resources, HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<List<Movie>>(movies, HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(resources);
     }
 
     @ApiOperation(value = "Get a movie")
@@ -105,14 +133,16 @@ public class MovieRest {
     })
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Movie> read(@PathVariable("code") @NotNull Long code) {
-        Movie movie = service.read(code);
+    public ResponseEntity<MovieResource> read(@PathVariable("code") @NotNull Long code) {
+        MovieResource resource = movieResourceAssembler.toResource(service.read(code));
 
-        if (movie == null) {
-            return new ResponseEntity<Movie>(movie, HttpStatus.NOT_FOUND);
+        if (resource == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(resource);
     }
 
     @ApiOperation(value = "Delete a movie")
@@ -126,13 +156,15 @@ public class MovieRest {
     })
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Movie> delete(@PathVariable Long code) {
-        Movie movie = service.delete(code);
+    public ResponseEntity<MovieResource> delete(@PathVariable Long code) {
+        MovieResource resource = movieResourceAssembler.toResource(service.delete(code));
 
-        if (movie == null) {
-            return new ResponseEntity<Movie>(movie, HttpStatus.NO_CONTENT);
+        if (resource == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<Movie>(movie, HttpStatus.OK);
+        return ResponseEntity
+                .ok()
+                .body(resource);
     }
 }

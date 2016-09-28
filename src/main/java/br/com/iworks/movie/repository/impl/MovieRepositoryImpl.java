@@ -14,7 +14,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
-import br.com.iworks.movie.dto.MovieDTO;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.repository.MovieRepositoryCustom;
 
@@ -25,26 +24,26 @@ public class MovieRepositoryImpl implements MovieRepositoryCustom {
     private MongoOperations mongoOperations;
 
     @Override
-    public List<Movie> list(MovieDTO movieDTO) {
+    public List<Movie> list(Movie movie) {
         List<Movie> movies = null;
 
-        if (movieDTO != null) {
+        if (movie != null) {
             List<Criteria> criteriasAnd = new ArrayList<Criteria>();
 
-            if (StringUtils.isNotBlank(movieDTO.getTittle())) {
-                criteriasAnd.add(where("tittle").regex(Pattern.quote(movieDTO.getTittle()), "i"));
+            if (StringUtils.isNotBlank(movie.getTittle())) {
+                criteriasAnd.add(where("tittle").regex(Pattern.quote(movie.getTittle()), "i"));
             }
 
-            if (StringUtils.isNotBlank(movieDTO.getOriginalTitle())) {
-                criteriasAnd.add(where("originalTittle").regex(Pattern.quote(movieDTO.getOriginalTitle()), "i"));
+            if (StringUtils.isNotBlank(movie.getOriginalTittle())) {
+                criteriasAnd.add(where("originalTittle").regex(Pattern.quote(movie.getOriginalTittle()), "i"));
             }
 
-            if (StringUtils.isNotBlank(movieDTO.getType())) {
-                criteriasAnd.add(where("type").regex(Pattern.quote(movieDTO.getType()), "i"));
+            if (movie.getType() != null && StringUtils.isNotBlank(movie.getType().getDescription())) {
+                criteriasAnd.add(where("type").regex(Pattern.quote(movie.getType().getDescription()), "i"));
             }
 
             if (!CollectionUtils.isEmpty(criteriasAnd)) {
-                Criteria criteria = new Criteria().andOperator(criteriasAnd.toArray(new Criteria[0]));
+                Criteria criteria = new Criteria().andOperator(criteriasAnd.toArray(new Criteria[criteriasAnd.size()]));
                 movies = mongoOperations.find(new Query(criteria), Movie.class);
             } else {
                 movies = mongoOperations.findAll(Movie.class);
