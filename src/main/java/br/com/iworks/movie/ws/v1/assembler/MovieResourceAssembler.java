@@ -1,12 +1,14 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class MovieResourceAssembler {
@@ -40,11 +42,23 @@ public class MovieResourceAssembler {
 
         List<MovieResource> resources = new ArrayList<>();
 
-        movies.forEach(movie -> {
-            resources.add(toResource(movie));
-        });
+        movies.forEach(movie -> resources.add(toResource(movie)));
 
         return resources;
+    }
+
+    public Page<MovieResource> toPage(Page<Movie> moviePage) {
+        if (moviePage == null) {
+            return null;
+        }
+
+        List<MovieResource> resources = new ArrayList<>();
+
+        if (moviePage.hasContent()) {
+            moviePage.getContent().forEach(movie -> resources.add(toResource(movie)));
+        }
+
+        return new PageImpl<>(resources, new PageRequest(moviePage.getNumber(), moviePage.getSize(), moviePage.getSort()), moviePage.getTotalElements());
     }
 
     public Movie toModel(MovieResource resource) {

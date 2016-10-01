@@ -2,6 +2,7 @@ package br.com.iworks.movie.config;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -33,6 +34,7 @@ public class Swagger2Configuration {
                 .globalResponseMessage(RequestMethod.DELETE, getPutOrDeleteResponseMessages())
                 .globalResponseMessage(RequestMethod.GET, getGetResponseMessages())
                 .ignoredParameterTypes(WebRequest.class)
+                .ignoredParameterTypes(Pageable.class)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.iworks.movie.ws"))

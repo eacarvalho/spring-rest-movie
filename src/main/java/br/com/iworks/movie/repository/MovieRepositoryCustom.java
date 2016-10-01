@@ -1,10 +1,10 @@
 package br.com.iworks.movie.repository;
 
-import java.util.List;
-
 import br.com.iworks.movie.model.entity.Movie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MovieRepositoryCustom {
 
-    List<Movie> list(Movie movie);
+    Page<Movie> list(Movie movie, Pageable pageable);
 }
