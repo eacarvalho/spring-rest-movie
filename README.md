@@ -2,7 +2,7 @@
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 # Technologies
-Built using maven, java 8, spring-boot 1.3, spring-boot-actuator, spring-mvc, spring-data, swagger 2, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
+Built using maven, java 8, spring-boot 1.4.1, spring-boot-actuator, spring-mvc, spring-data, swagger 2, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
 # Travis CI (Continuous Integration)
 Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
@@ -17,6 +17,7 @@ http://localhost:8080/
 - PUT     http://localhost:8080/movies/1
 - GET     http://localhost:8080/movies
 - GET     http://localhost:8080/movies/1
+- GET     http://localhost:8080/movies/filter?tittle=Taken
 - DELETE  http://localhost:8080/movies/1
 - GET     http://localhost:8080/types
 - GET     http://localhost:8080/genres
