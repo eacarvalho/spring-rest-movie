@@ -1,6 +1,6 @@
 package br.com.iworks.movie.model.entity;
 
-import br.com.iworks.movie.config.util.JsonDateSerializer;
+import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -62,7 +62,7 @@ public class Movie {
     private String directors;
     private int rating;
 
-    @JsonSerialize(using = JsonDateSerializer.class)
+    @JsonSerialize(using = JsonDateTimeSerializer.class)
     public Date getReleasedDate() {
         return releasedDate;
     }
