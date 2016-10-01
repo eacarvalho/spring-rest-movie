@@ -52,8 +52,8 @@ public class Swagger2Configuration {
                         .message("Created")
                         .build(),
                 new ResponseMessageBuilder()
-                        .code(404)
-                        .message("Not Found")
+                        .code(400)
+                        .message("Bad Request")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(409)
@@ -67,8 +67,8 @@ public class Swagger2Configuration {
                         .message("OK")
                         .build(),
                 new ResponseMessageBuilder()
-                        .code(204)
-                        .message("No Content")
+                        .code(400)
+                        .message("Bad Request")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(404)
@@ -80,6 +80,10 @@ public class Swagger2Configuration {
         return newArrayList(new ResponseMessageBuilder()
                         .code(200)
                         .message("OK")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(204)
+                        .message("No Content")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(400)

@@ -1,11 +1,17 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
+import br.com.iworks.movie.exceptions.ListNotFoundException;
+import br.com.iworks.movie.exceptions.MovieException;
+import br.com.iworks.movie.exceptions.ResourceNotFoundException;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
+import com.google.common.collect.Lists;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +21,7 @@ public class MovieResourceAssembler {
 
     public MovieResource toResource(Movie movie) {
         if (movie == null) {
-            return null;
+            throw new ResourceNotFoundException("Movie not found");
         }
 
         MovieResource resource = new MovieResource();
@@ -36,8 +42,8 @@ public class MovieResourceAssembler {
     }
 
     public List<MovieResource> toResources(List<Movie> movies) {
-        if (movies == null) {
-            return null;
+        if (movies == null || CollectionUtils.isEmpty(movies)) {
+            throw new ListNotFoundException("Movies not found");
         }
 
         List<MovieResource> resources = new ArrayList<>();
@@ -48,8 +54,8 @@ public class MovieResourceAssembler {
     }
 
     public Page<MovieResource> toPage(Page<Movie> moviePage) {
-        if (moviePage == null) {
-            return null;
+        if (moviePage == null || CollectionUtils.isEmpty(moviePage.getContent())) {
+            throw new ListNotFoundException("Movies not found");
         }
 
         List<MovieResource> resources = new ArrayList<>();
@@ -63,7 +69,7 @@ public class MovieResourceAssembler {
 
     public Movie toModel(MovieResource resource) {
         if (resource == null) {
-            return null;
+            throw new IllegalArgumentException("Movie not found");
         }
 
         Movie movie = new Movie();

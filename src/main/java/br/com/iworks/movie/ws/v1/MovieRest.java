@@ -13,10 +13,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -36,7 +34,6 @@ public class MovieRest {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 400, message = "Bad Request"),
-            @ApiResponse(code = 404, message = "Not Found"),
             @ApiResponse(code = 409, message = "Conflict")
     })
     @ApiImplicitParams({
@@ -71,13 +68,7 @@ public class MovieRest {
         Movie movie = movieResourceAssembler.toModel(movieResource);
         MovieResource resource = movieResourceAssembler.toResource(service.update(code, movie));
 
-        if (resource == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return ResponseEntity
-                .ok()
-                .body(resource);
+        return ResponseEntity.ok().body(resource);
     }
 
     @ApiOperation(value = "Get the list of movies")
@@ -98,10 +89,6 @@ public class MovieRest {
     public ResponseEntity<Page<MovieResource>> list(@PageableDefault(size = 20) Pageable pageable) {
         Page<Movie> movies = service.list(pageable);
         Page<MovieResource> resources = movieResourceAssembler.toPage(movies);
-
-        if (CollectionUtils.isEmpty(resources.getContent())) {
-            return new ResponseEntity<>(resources, HttpStatus.NO_CONTENT);
-        }
 
         return ResponseEntity.ok().body(resources);
     }
@@ -136,10 +123,6 @@ public class MovieRest {
         Page<Movie> movies = service.list(movieResourceAssembler.toModel(movieResource), pageable);
         Page<MovieResource> resources = movieResourceAssembler.toPage(movies);
 
-        if (CollectionUtils.isEmpty(resources.getContent())) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
         return ResponseEntity.ok().body(resources);
     }
 
@@ -156,13 +139,7 @@ public class MovieRest {
     public ResponseEntity<MovieResource> read(@PathVariable("code") @NotNull Long code) {
         MovieResource resource = movieResourceAssembler.toResource(service.read(code));
 
-        if (resource == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        return ResponseEntity
-                .ok()
-                .body(resource);
+        return ResponseEntity.ok().body(resource);
     }
 
     @ApiOperation(value = "Delete a movie")
@@ -179,12 +156,6 @@ public class MovieRest {
     public ResponseEntity<MovieResource> delete(@PathVariable Long code) {
         MovieResource resource = movieResourceAssembler.toResource(service.delete(code));
 
-        if (resource == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-
-        return ResponseEntity
-                .ok()
-                .body(resource);
+        return ResponseEntity.ok().body(resource);
     }
 }

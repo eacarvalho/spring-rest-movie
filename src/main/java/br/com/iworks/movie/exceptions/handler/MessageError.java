@@ -14,9 +14,7 @@ public class MessageError implements Serializable {
     private List<String> errors;
     private List<String> warning;
 
-    public MessageError() {
-
-    }
+    public MessageError() {}
 
     public MessageError(List<String> errors) {
         this.errors = errors;
