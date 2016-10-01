@@ -1,41 +1,26 @@
-package br.com.iworks.movie.model.entity;
+package br.com.iworks.movie.ws.v1.resource;
 
-import br.com.iworks.movie.config.util.JsonDateSerializer;
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
-import org.springframework.data.mongodb.core.index.CompoundIndexes;
-import org.springframework.data.mongodb.core.mapping.Document;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
 
-@Document(collection = Movie.COLLECTION_NAME)
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.iworks.movie.config.util.JsonDateSerializer;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
-@CompoundIndexes({
-        @CompoundIndex(name = "code_movie_idx", def = "{'code': 1}", unique = true)
-})
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Movie {
-
-    public static final String COLLECTION_NAME = "movies";
-
-    @Id
-    @JsonIgnore
-    private String id;
+public class MovieResource {
 
     private Long code;
 
@@ -50,7 +35,6 @@ public class Movie {
     @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
     private List<GenreEnum> genres;
-    private Date registrationDate;
     private Date releasedDate;
 
     @Max(value = 9999, message = "{validation.size}")

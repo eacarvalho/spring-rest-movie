@@ -1,7 +1,8 @@
-package br.com.iworks.movie.infra;
+package br.com.iworks.movie.config;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.WebRequest;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -33,6 +34,7 @@ public class Swagger2Configuration {
                 .globalResponseMessage(RequestMethod.DELETE, getPutOrDeleteResponseMessages())
                 .globalResponseMessage(RequestMethod.GET, getGetResponseMessages())
                 .ignoredParameterTypes(WebRequest.class)
+                .ignoredParameterTypes(Pageable.class)
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("br.com.iworks.movie.ws"))
@@ -50,8 +52,8 @@ public class Swagger2Configuration {
                         .message("Created")
                         .build(),
                 new ResponseMessageBuilder()
-                        .code(404)
-                        .message("Not Found")
+                        .code(400)
+                        .message("Bad Request")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(409)
@@ -65,8 +67,8 @@ public class Swagger2Configuration {
                         .message("OK")
                         .build(),
                 new ResponseMessageBuilder()
-                        .code(204)
-                        .message("No Content")
+                        .code(400)
+                        .message("Bad Request")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(404)
@@ -78,6 +80,10 @@ public class Swagger2Configuration {
         return newArrayList(new ResponseMessageBuilder()
                         .code(200)
                         .message("OK")
+                        .build(),
+                new ResponseMessageBuilder()
+                        .code(204)
+                        .message("No Content")
                         .build(),
                 new ResponseMessageBuilder()
                         .code(400)

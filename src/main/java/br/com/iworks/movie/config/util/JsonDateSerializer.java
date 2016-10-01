@@ -1,4 +1,4 @@
-package br.com.iworks.movie.infra.util;
+package br.com.iworks.movie.config.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;

@@ -1,9 +1,14 @@
 package br.com.iworks.movie.exceptions.handler;
 
+import br.com.iworks.movie.exceptions.ListNotFoundException;
 import br.com.iworks.movie.exceptions.MovieException;
+import br.com.iworks.movie.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,22 +24,23 @@ import java.util.List;
 @ControllerAdvice
 public class MovieExceptionHandler {
 
+    private static final String CONTENT_TYPE = "Content-Type";
+    private static final String APPLICATION_JSON_CHARSET_UTF_8 = "application/json; charset=utf-8";
+
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MovieException.class)
     @ResponseBody
     public MessageError handleLojistaException(MovieException ex) {
         log.error("Business error: {}", ExceptionUtils.getMessage(ex));
-        MessageError errorMessage = new MessageError(ex.getLocalizedMessage());
-        return errorMessage;
+        return new MessageError(ex.getLocalizedMessage());
     }
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public MessageError handleExceptionInternal(Exception ex) {
-        log.error("Exception not expected: {}", ExceptionUtils.getMessage(ex), ex);
-        MessageError errorMessage = new MessageError(ex.getLocalizedMessage());
-        return errorMessage;
+    public MessageError handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.error("Validation error: {}", ExceptionUtils.getMessage(ex));
+        return new MessageError(ex.getLocalizedMessage());
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
@@ -54,7 +60,35 @@ public class MovieExceptionHandler {
             error = objectError.getObjectName() + ", " + objectError.getDefaultMessage();
             errors.add(error);
         }
-        MessageError errorMessage = new MessageError(errors);
-        return errorMessage;
+        return new MessageError(errors);
+    }
+
+    @ResponseBody
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public MessageError handleExceptionInternal(Exception ex) {
+        log.error("Exception not expected: {}", ExceptionUtils.getMessage(ex), ex);
+        return new MessageError(ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(ListNotFoundException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public HttpEntity<MessageError> handlerListNotFoundException(ListNotFoundException ex) {
+        log.error("No Content: {}", ExceptionUtils.getMessage(ex));
+        return this.getMessageErrorHttpEntity(ex, HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public HttpEntity<MessageError> handlerResourceNotFoundException(final ResourceNotFoundException ex) {
+        log.error("Resource Not Found: {}", ExceptionUtils.getMessage(ex));
+        return this.getMessageErrorHttpEntity(ex, HttpStatus.NOT_FOUND);
+    }
+
+    private HttpEntity<MessageError> getMessageErrorHttpEntity(MovieException ex, HttpStatus noContent) {
+        MessageError messageError = new MessageError(ExceptionUtils.getMessage(ex));
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add(CONTENT_TYPE, APPLICATION_JSON_CHARSET_UTF_8);
+        return new ResponseEntity<>(messageError, responseHeaders, noContent);
     }
 }

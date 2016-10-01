@@ -1,24 +1,24 @@
 package br.com.iworks.movie.service.impl;
 
-import br.com.iworks.movie.dto.MovieDTO;
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.model.entity.QMovie;
 import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.service.CounterService;
 import br.com.iworks.movie.service.MovieService;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -90,13 +90,13 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<Movie> list() {
-        return repo.findAll();
+    public Page<Movie> list(Pageable pageable) {
+        return repo.findAll(pageable);
     }
 
     @Override
-    public List<Movie> list(MovieDTO movieDTO) {
-        return repo.list(movieDTO);
+    public Page<Movie> list(Movie movie, Pageable pageable) {
+        return repo.list(movie, pageable);
     }
 
     @Override

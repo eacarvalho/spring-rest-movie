@@ -6,7 +6,6 @@
     <groupId>br.com.iworks</groupId>
     <artifactId>spring-rest-movie</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
 
     <name>spring-rest-movie</name>
     <description>Movie project for Spring Boot</description>
@@ -14,20 +13,18 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.2.7.RELEASE</version>
+        <version>1.4.1.RELEASE</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring-data-releasetrain.version>Fowler-RELEASE</spring-data-releasetrain.version>
-        <querydsl.version>3.6.3</querydsl.version>
-        <mongo.driver.version>2.13.3</mongo.driver.version>
-        <lombok.version>1.16.6</lombok.version>
-        <apache.commons.version>3.3.2</apache.commons.version>
-        <io.springfox.version>2.2.2</io.springfox.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <querydsl.version>4.1.4</querydsl.version>
+        <lombok.version>1.16.10</lombok.version>
+        <apache.commons.version>3.4</apache.commons.version>
+        <io.springfox.version>2.5.0</io.springfox.version>
     </properties>
 
     <dependencies>
@@ -61,36 +58,28 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${io.springfox.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${io.springfox.version}</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>${mongo.driver.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-core</artifactId>
             <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-apt</artifactId>
             <version>${querydsl.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>com.mysema.querydsl</groupId>
+            <groupId>com.querydsl</groupId>
             <artifactId>querydsl-mongodb</artifactId>
             <version>${querydsl.version}</version>
         </dependency>
@@ -107,49 +96,6 @@
             <version>${lombok.version}</version>
         </dependency>
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-parent</artifactId>
-                <version>1.0.1.RELEASE</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <profiles>
-        <profile>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <id>local</id>
-            <properties>
-                <environment>local</environment>
-                <mongo.host>127.0.0.1</mongo.host>
-                <mongo.port>27017</mongo.port>
-                <mongo.database>movie</mongo.database>
-                <mongo.username>mongo_movie</mongo.username>
-                <mongo.password>123</mongo.password>
-            </properties>
-        </profile>
-        <profile>
-            <activation>
-                <activeByDefault>false</activeByDefault>
-            </activation>
-            <id>integrated-test</id>
-            <properties>
-                <environment>local</environment>
-                <mongo.host>127.0.0.1</mongo.host>
-                <mongo.port>27017</mongo.port>
-                <mongo.database>movie-itest</mongo.database>
-                <mongo.username>mongo_movie</mongo.username>
-                <mongo.password>123</mongo.password>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
@@ -168,8 +114,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>target/generated-sources/querydsl</outputDirectory>
-                            <processor>org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor
-                            </processor>
+                            <processor>org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor</processor>
                         </configuration>
                     </execution>
                 </executions>
@@ -179,21 +124,17 @@
 
     <repositories>
         <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Snapshots</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
         </repository>
     </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/libs-release</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>

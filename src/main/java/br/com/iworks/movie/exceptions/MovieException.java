@@ -3,9 +3,6 @@ package br.com.iworks.movie.exceptions;
 public class MovieException extends RuntimeException {
     private static final long serialVersionUID = -6299175182809658885L;
 
-    public MovieException() {
-    }
-
     public MovieException(String message) {
         super(message);
     }

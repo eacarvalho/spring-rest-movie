@@ -1,9 +1,10 @@
 package br.com.iworks.movie.service;
 
-import br.com.iworks.movie.dto.MovieDTO;
-import br.com.iworks.movie.model.entity.Movie;
-
 import java.util.List;
+
+import br.com.iworks.movie.model.entity.Movie;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface MovieService {
 
@@ -11,9 +12,9 @@ public interface MovieService {
 
     Movie update(Long code, Movie movie);
 
-    List<Movie> list();
+    Page<Movie> list(Pageable pageable);
 
-    List<Movie> list(MovieDTO movieDTO);
+    Page<Movie> list(Movie movie, Pageable pageable);
 
     Movie read(Long code);
 
