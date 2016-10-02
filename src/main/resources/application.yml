@@ -10,6 +10,10 @@ info:
     description: The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record
     version: 0.0.1-SNAPSHOT
 
+gateway:
+  omdb:
+    url: http://www.omdbapi.com/
+
 # SPRING-BOOT-ACTUATOR (http://www.javabeat.net/spring-boot-actuator)
 endpoints:
   info:

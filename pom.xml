@@ -25,6 +25,7 @@
         <lombok.version>1.16.10</lombok.version>
         <apache.commons.version>3.4</apache.commons.version>
         <io.springfox.version>2.5.0</io.springfox.version>
+        <httpclient.version>4.5.2</httpclient.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <!-- Extra configuration for RestTemplate -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${httpclient.version}</version>
         </dependency>
 
         <dependency>

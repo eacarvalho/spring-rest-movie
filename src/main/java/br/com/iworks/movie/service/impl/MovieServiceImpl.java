@@ -118,7 +118,7 @@ public class MovieServiceImpl implements MovieService {
 
     private MovieException movieException(Movie movie, Exception ex) {
         return new MovieException(messageSource.getMessage("movie.save.error",
-                new Object[]{movie.getTittle(), ex.getMessage()}, LocaleContextHolder
+                new Object[]{movie.getTitle(), ex.getMessage()}, LocaleContextHolder
                         .getLocale()));
     }
 }

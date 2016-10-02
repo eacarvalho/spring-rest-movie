@@ -82,7 +82,7 @@ public class MovieServiceImplTest {
     public void errorRequiredTittleCreateMovie() {
         Movie movie = new Movie();
 
-        movie.setOriginalTittle("Original tittle test");
+        movie.setOriginalTitle("Original title test");
         movie.setDuration(116);
 
         service.create(movie);
@@ -140,7 +140,7 @@ public class MovieServiceImplTest {
     public void errorRequiredTittleUpdateMovie() {
         Movie movie = new Movie();
 
-        movie.setOriginalTittle("Original tittle test");
+        movie.setOriginalTitle("Original title test");
         movie.setDuration(116);
 
         when(service.read(any(Long.class))).thenReturn(movie);
@@ -229,8 +229,8 @@ public class MovieServiceImplTest {
     private Movie getMovie() {
         Movie movie = new Movie();
 
-        movie.setTittle("Tittle test");
-        movie.setOriginalTittle("Original tittle test");
+        movie.setTitle("Tittle test");
+        movie.setOriginalTitle("Original title test");
         movie.setPlot("Plot");
         movie.setDuration(116);
         movie.setType(TypeEnum.MOVIE);

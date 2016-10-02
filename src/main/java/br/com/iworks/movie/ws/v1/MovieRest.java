@@ -99,8 +99,8 @@ public class MovieRest {
             @ApiResponse(code = 204, message = "No Content"),
             @ApiResponse(code = 400, message = "Bad Request")})
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "tittle", value = "Movie's tittle", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "originalTittle", value = "Movie's original tittle", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "title", value = "Movie's title", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "originalTitle", value = "Movie's original title", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "type", value = "Movie's type", required = false, dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
             @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
@@ -115,8 +115,8 @@ public class MovieRest {
         MovieResource movieResource = new MovieResource();
 
         if (webRequest != null) {
-            movieResource.setTittle(webRequest.getParameter("tittle"));
-            movieResource.setOriginalTittle(webRequest.getParameter("originalTittle"));
+            movieResource.setTitle(webRequest.getParameter("title"));
+            movieResource.setOriginalTitle(webRequest.getParameter("originalTitle"));
             movieResource.setType(TypeEnum.create(webRequest.getParameter("type")));
         }
 
