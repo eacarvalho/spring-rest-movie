@@ -47,9 +47,7 @@ public class MovieServiceImpl implements MovieService {
             movie.setRegistrationDate(Calendar.getInstance().getTime());
             movie = repo.save(movie);
         } catch (Exception e) {
-            throw new MovieException(messageSource.getMessage("movie.save.error",
-                    new Object[]{movie.getTittle(), e.getMessage()}, LocaleContextHolder
-                            .getLocale()));
+            throw movieException(movie, e);
         }
 
         return movie;
@@ -57,36 +55,25 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie update(Long code, Movie movie) {
-        Movie movieDatabase = this.read(code);
+        Movie savedMovie = this.read(code);
 
-        if (movieDatabase != null) {
-
+        if (savedMovie != null) {
             try {
                 this.validateMovie(movie);
 
-                movie.setId(movieDatabase.getId());
-                movie.setCode(movieDatabase.getCode());
+                movie.setId(savedMovie.getId());
+                movie.setCode(savedMovie.getCode());
+                movie.setRegistrationDate(savedMovie.getRegistrationDate());
+
                 repo.save(movie);
 
                 return movie;
             } catch (Exception e) {
-                throw new MovieException(messageSource.getMessage("movie.save.error",
-                        new Object[]{movie.getTittle(), e.getMessage()}, LocaleContextHolder
-                                .getLocale()));
+                throw movieException(movie, e);
             }
         }
 
         return null;
-    }
-
-    private void validateMovie(Movie movie) {
-        Set<ConstraintViolation<Movie>> errors = validator.validate(movie);
-
-        if (!CollectionUtils.isEmpty(errors)) {
-            String error = errors.stream().map(err -> err.getPropertyPath() + " : " + err.getMessage()).collect
-                    (Collectors.joining(" | "));
-            throw new MovieException(error);
-        }
     }
 
     @Override
@@ -103,7 +90,6 @@ public class MovieServiceImpl implements MovieService {
     public Movie read(Long code) {
         QMovie qMovie = QMovie.movie;
         BooleanExpression equalsCode = qMovie.code.eq(code);
-
         return repo.findOne(equalsCode);
     }
 
@@ -113,8 +99,26 @@ public class MovieServiceImpl implements MovieService {
 
         if (movie != null) {
             repo.delete(movie);
+
+            return movie;
         }
 
-        return movie;
+        return null;
+    }
+
+    private void validateMovie(Movie movie) {
+        Set<ConstraintViolation<Movie>> errors = validator.validate(movie);
+
+        if (!CollectionUtils.isEmpty(errors)) {
+            String error = errors.stream().map(err -> err.getPropertyPath() + " : " + err.getMessage()).collect
+                    (Collectors.joining(" | "));
+            throw new MovieException(error);
+        }
+    }
+
+    private MovieException movieException(Movie movie, Exception ex) {
+        return new MovieException(messageSource.getMessage("movie.save.error",
+                new Object[]{movie.getTittle(), ex.getMessage()}, LocaleContextHolder
+                        .getLocale()));
     }
 }

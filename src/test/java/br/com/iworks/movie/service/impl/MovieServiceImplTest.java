@@ -14,12 +14,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.util.Date;
 import java.util.Locale;
 
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,7 +36,7 @@ public class MovieServiceImplTest {
     private MovieServiceImpl service;
 
     @Mock
-    private MovieRepository repository;
+    private MovieRepository repo;
 
     @Mock
     private CounterService counterService;
@@ -53,13 +60,22 @@ public class MovieServiceImplTest {
 
     @Test
     public void successCreateMovie() {
-        Movie movie = this.getMovie();
+        Movie mockMovie = this.getMovie();
 
-        when(this.counterService.getNextSequence(Movie.COLLECTION_NAME)).thenReturn(1L);
+        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCode());
+        when(counterService.getNextSequence(Movie.COLLECTION_NAME)).thenReturn(1L);
+        when(repo.save(any(Movie.class))).thenReturn(mockMovie);
 
-        this.service.create(movie);
+        Movie movie = service.create(mockMovie);
 
-        verify(this.repository, times(1)).save(any(Movie.class));
+        verify(repo, times(1)).save(any(Movie.class));
+        assertThat(movie.getCode(), is(1L));
+        assertThat(movie.getType(), is(TypeEnum.MOVIE));
+        assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
+        assertNotNull(movie.getRegistrationDate());
+        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(mockMovie.getCode());
     }
 
     @Test(expected = MovieException.class)
@@ -69,21 +85,55 @@ public class MovieServiceImplTest {
         movie.setOriginalTittle("Original tittle test");
         movie.setDuration(116);
 
-        this.service.create(movie);
+        service.create(movie);
 
-        verify(this.counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
-        verify(this.repository, never()).save(any(Movie.class));
+        verify(counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
+        verify(repo, never()).save(any(Movie.class));
     }
 
     @Test
     public void successUpdateMovie() {
-        Movie movie = this.getMovie();
+        Movie mockMovie = this.getMovie();
 
-        when(this.service.read(any(Long.class))).thenReturn(movie);
+        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCode());
+        assertNull(mockMovie.getId());
 
-        this.service.update(1L, movie);
+        mockMovie.setCode(1L);
+        mockMovie.setId("id");
+        mockMovie.setRegistrationDate(new Date());
 
-        verify(this.repository, times(1)).save(any(Movie.class));
+        when(service.read(any(Long.class))).thenReturn(mockMovie);
+        when(repo.save(any(Movie.class))).thenReturn(mockMovie);
+
+        Movie movie = service.update(1L, mockMovie);
+
+        verify(counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
+        verify(repo, times(1)).save(any(Movie.class));
+        assertThat(movie.getCode(), is(1L));
+        assertThat(movie.getType(), is(TypeEnum.MOVIE));
+        assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
+        assertNotNull(movie.getRegistrationDate());
+        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(mockMovie.getCode());
+    }
+
+    @Test
+    public void errorCodeNotFoundUpdateMovie() {
+        Movie mockMovie = this.getMovie();
+
+        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCode());
+        assertNull(mockMovie.getId());
+
+        when(service.read(2L)).thenReturn(null);
+
+        Movie movie = service.update(2L, mockMovie);
+
+        verify(counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
+        verify(repo, never()).save(any(Movie.class));
+        assertNull(movie);
+        assertNotNull(mockMovie);
     }
 
     @Test(expected = MovieException.class)
@@ -93,31 +143,87 @@ public class MovieServiceImplTest {
         movie.setOriginalTittle("Original tittle test");
         movie.setDuration(116);
 
-        when(this.service.read(any(Long.class))).thenReturn(movie);
+        when(service.read(any(Long.class))).thenReturn(movie);
 
-        this.service.update(1L, movie);
+        service.update(1L, movie);
 
-        verify(this.repository, never()).save(any(Movie.class));
+        verify(repo, never()).save(any(Movie.class));
     }
 
     @Test
     public void successDeleteMovie() {
-        Movie movie = this.getMovie();
+        Movie mockMovie = this.getMovie();
 
-        when(this.service.read(any(Long.class))).thenReturn(movie);
+        mockMovie.setCode(1L);
+        mockMovie.setId("id");
+        mockMovie.setRegistrationDate(new Date());
 
-        this.service.delete(1L);
+        when(service.read(any(Long.class))).thenReturn(mockMovie);
 
-        verify(this.repository, times(1)).delete(any(Movie.class));
+        Movie movie = service.delete(1L);
+
+        verify(repo, times(1)).delete(any(Movie.class));
+        verify(counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
+        assertThat(movie.getCode(), is(1L));
+        assertThat(movie.getType(), is(TypeEnum.MOVIE));
+        assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
+        assertNotNull(movie.getRegistrationDate());
+        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(mockMovie.getCode());
     }
 
     @Test
     public void errorDeleteMovie() {
-        when(this.service.read(any(Long.class))).thenReturn(null);
+        when(service.read(any(Long.class))).thenReturn(null);
 
-        this.service.delete(1L);
+        Movie movie = service.delete(1L);
 
-        verify(this.repository, never()).delete(any(Movie.class));
+        verify(repo, never()).delete(any(Movie.class));
+        assertNull(movie);
+    }
+
+    @Test
+    public void successListAll() {
+        Movie mockMovie = this.getMovie();
+
+        mockMovie.setCode(1L);
+        mockMovie.setId("id");
+        mockMovie.setRegistrationDate(new Date());
+
+        Pageable pageable = new PageRequest(1, 1);
+        Page<Movie> mockMovies = new PageImpl<>(Lists.newArrayList(mockMovie), pageable, 1L);
+
+        when(repo.findAll(any(Pageable.class))).thenReturn(mockMovies);
+
+        Page<Movie> movies = service.list(pageable);
+
+        verify(repo, times(1)).findAll(any(Pageable.class));
+        assertNotNull(movies);
+        assertNotNull(movies.getContent());
+        assertNotNull(movies.getContent().get(0).getId());
+        assertThat(movies.getContent().get(0).getCode(), is(1L));
+    }
+
+    @Test
+    public void successListByFilter() {
+        Movie mockMovie = this.getMovie();
+
+        mockMovie.setCode(1L);
+        mockMovie.setId("id");
+        mockMovie.setRegistrationDate(new Date());
+
+        Pageable pageable = new PageRequest(1, 1);
+        Page<Movie> mockMovies = new PageImpl<>(Lists.newArrayList(mockMovie), pageable, 1L);
+
+        when(repo.list(any(Movie.class), any(Pageable.class))).thenReturn(mockMovies);
+
+        Page<Movie> movies = service.list(mockMovie, pageable);
+
+        verify(repo, times(1)).list(any(Movie.class), any(Pageable.class));
+        assertNotNull(movies);
+        assertNotNull(movies.getContent());
+        assertNotNull(movies.getContent().get(0).getId());
+        assertThat(movies.getContent().get(0).getCode(), is(1L));
     }
 
     private Movie getMovie() {
