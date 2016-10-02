@@ -31,12 +31,12 @@ public class MovieRepositoryImpl implements MovieRepositoryCustom {
         List<Criteria> criteriasAnd = new ArrayList<>();
 
         if (movie != null) {
-            if (StringUtils.isNotBlank(movie.getTittle())) {
-                criteriasAnd.add(where("tittle").regex(Pattern.quote(movie.getTittle()), "i"));
+            if (StringUtils.isNotBlank(movie.getTitle())) {
+                criteriasAnd.add(where("title").regex(Pattern.quote(movie.getTitle()), "i"));
             }
 
-            if (StringUtils.isNotBlank(movie.getOriginalTittle())) {
-                criteriasAnd.add(where("originalTittle").regex(Pattern.quote(movie.getOriginalTittle()), "i"));
+            if (StringUtils.isNotBlank(movie.getOriginalTitle())) {
+                criteriasAnd.add(where("originalTitle").regex(Pattern.quote(movie.getOriginalTitle()), "i"));
             }
 
             if (movie.getType() != null && StringUtils.isNotBlank(movie.getType().getDescription())) {

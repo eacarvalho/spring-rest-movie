@@ -1,23 +1,27 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
 import br.com.iworks.movie.exceptions.ListNotFoundException;
-import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.exceptions.ResourceNotFoundException;
+import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
-import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class MovieResourceAssembler {
+
+    @Autowired
+    private OmdbApiGateway omdbApiGateway;
 
     public MovieResource toResource(Movie movie) {
         if (movie == null) {
@@ -27,8 +31,8 @@ public class MovieResourceAssembler {
         MovieResource resource = new MovieResource();
 
         resource.setCode(movie.getCode());
-        resource.setTittle(movie.getTittle());
-        resource.setOriginalTittle(movie.getOriginalTittle());
+        resource.setTitle(movie.getTitle());
+        resource.setOriginalTitle(movie.getOriginalTitle());
         resource.setDuration(movie.getDuration());
         resource.setType(movie.getType());
         resource.setGenres(movie.getGenres());
@@ -37,6 +41,12 @@ public class MovieResourceAssembler {
         resource.setPlot(movie.getPlot());
         resource.setDirectors(movie.getDirectors());
         resource.setRating(movie.getRating());
+
+        OmdbApiResource omdbApiResource = omdbApiGateway.findByTitle(resource.getOriginalTitle());
+
+        if (StringUtils.isNoneBlank(omdbApiResource.getTitle())) {
+            resource.setOmdbResource(omdbApiResource);
+        }
 
         return resource;
     }
@@ -75,8 +85,8 @@ public class MovieResourceAssembler {
         Movie movie = new Movie();
 
         movie.setCode(resource.getCode());
-        movie.setTittle(resource.getTittle());
-        movie.setOriginalTittle(resource.getOriginalTittle());
+        movie.setTitle(resource.getTitle());
+        movie.setOriginalTitle(resource.getOriginalTitle());
         movie.setDuration(resource.getDuration());
         movie.setType(resource.getType());
         movie.setGenres(resource.getGenres());

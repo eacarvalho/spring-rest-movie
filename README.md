@@ -17,7 +17,7 @@ http://localhost:8080/
 - PUT     http://localhost:8080/movies/1
 - GET     http://localhost:8080/movies
 - GET     http://localhost:8080/movies/1
-- GET     http://localhost:8080/movies/filter?tittle=Taken
+- GET     http://localhost:8080/movies/filter?title=Taken
 - DELETE  http://localhost:8080/movies/1
 - GET     http://localhost:8080/types
 - GET     http://localhost:8080/genres
@@ -26,8 +26,8 @@ Sample Movie JSON POST:
 
 ```
 {
-  "tittle":"Taken",
-  "originalTittle":"Taken",
+  "title":"Taken",
+  "originalTitle":"Taken",
   "duration":116,
   "type":"Movie",
   "genres": ["Action"],
