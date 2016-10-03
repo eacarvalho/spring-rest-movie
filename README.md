@@ -1,16 +1,20 @@
-# Introduction
+# Movie
+
+[![Build Status](https://travis-ci.org/eacarvalho/spring-rest-movie.svg?branch=develop)](https://travis-ci.org/eacarvalho/spring-rest-movie)
+
+## Introduction
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
-# Technologies
+## Technologies
 Built using maven, java 8, spring-boot 1.4.1, spring-boot-actuator, spring-mvc, spring-data, swagger 2, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
-# Travis CI (Continuous Integration)
+## Travis CI (Continuous Integration)
 Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
 
-# How start the project
+## How start the project
 mvn spring-boot:run -Dserver.port=8080
 
-# How access the project
+## How access the project
 http://localhost:8080/
 
 - POST    http://localhost:8080/movies
@@ -37,10 +41,10 @@ Sample Movie JSON POST:
 }
 ```
 
-# API RESTful
+## API RESTful
 Using Swagger 2 to document the RESTFul API accessing http://localhost:8080/swagger-ui.html
 
-# How check health of the app (actuator)
+## How check health of the app (actuator)
 - HEALTH      http://localhost:8080/health
 - INFO        http://localhost:8080/info
 - AUTOCONFIG  http://localhost:8080/autoconfig
@@ -51,7 +55,7 @@ Using Swagger 2 to document the RESTFul API accessing http://localhost:8080/swag
 - MAPPINGS    http://localhost:8080/mappings
 - TRACE       http://localhost:8080/trace 
 
-# Setting up the mongodb
+## Setting up the mongodb
 1. Start mongodb 3.0.6 as "mongod --config /usr/local/etc/mongod.conf"
 2. Connect to mongodb as "mongo"
 3. Create database and user as following:
