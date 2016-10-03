@@ -67,6 +67,14 @@ public class RestTemplateConfiguration {
         return httpClientBuilder;
     }
 
+    /**
+     * Pode passar o proxy com linha de comando:
+     *
+     * -Dproxy.enabled=true -Dproxy.host=seuproxyhost -Dproxy.port=8080 -Dproxy.username=nomedeusuario -Dproxy.password=senha
+     *
+     * @param requestConfigBuilder
+     * @return
+     */
     private CredentialsProvider getCredentialsProvider(final Builder requestConfigBuilder) {
         requestConfigBuilder.setProxy(new HttpHost(proxyHost, proxyPort));
         CredentialsProvider credentialProvider = new BasicCredentialsProvider();
