@@ -83,7 +83,7 @@ public class MovieServiceImplTest {
         Movie movie = new Movie();
 
         movie.setOriginalTitle("Original title test");
-        movie.setDuration(116);
+        movie.setDuration("116");
 
         service.create(movie);
 
@@ -141,7 +141,7 @@ public class MovieServiceImplTest {
         Movie movie = new Movie();
 
         movie.setOriginalTitle("Original title test");
-        movie.setDuration(116);
+        movie.setDuration("116");
 
         when(service.read(any(Long.class))).thenReturn(movie);
 
@@ -232,7 +232,7 @@ public class MovieServiceImplTest {
         movie.setTitle("Tittle test");
         movie.setOriginalTitle("Original title test");
         movie.setPlot("Plot");
-        movie.setDuration(116);
+        movie.setDuration("116");
         movie.setType(TypeEnum.MOVIE);
         movie.setGenres(Lists.newArrayList(GenreEnum.ACTION));
 

@@ -1,27 +1,21 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
-import br.com.iworks.movie.exceptions.ListNotFoundException;
-import br.com.iworks.movie.exceptions.ResourceNotFoundException;
-import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
-import br.com.iworks.movie.model.entity.Movie;
-import br.com.iworks.movie.ws.v1.resource.MovieResource;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import br.com.iworks.movie.exceptions.ListNotFoundException;
+import br.com.iworks.movie.exceptions.ResourceNotFoundException;
+import br.com.iworks.movie.model.entity.Movie;
+import br.com.iworks.movie.ws.v1.resource.MovieResource;
 
 @Component
 public class MovieResourceAssembler {
-
-    @Autowired
-    private OmdbApiGateway omdbApiGateway;
 
     public MovieResource toResource(Movie movie) {
         if (movie == null) {
@@ -39,14 +33,9 @@ public class MovieResourceAssembler {
         resource.setReleasedDate(movie.getReleasedDate());
         resource.setYear(movie.getYear());
         resource.setPlot(movie.getPlot());
-        resource.setDirectors(movie.getDirectors());
+        resource.setDirector(movie.getDirector());
         resource.setRating(movie.getRating());
-
-        OmdbApiResource omdbApiResource = omdbApiGateway.findByTitle(resource.getOriginalTitle());
-
-        if (StringUtils.isNoneBlank(omdbApiResource.getTitle())) {
-            resource.setOmdbResource(omdbApiResource);
-        }
+        resource.setImdbRating(movie.getImdbRating());
 
         return resource;
     }
@@ -93,8 +82,9 @@ public class MovieResourceAssembler {
         movie.setReleasedDate(resource.getReleasedDate());
         movie.setYear(resource.getYear());
         movie.setPlot(resource.getPlot());
-        movie.setDirectors(resource.getDirectors());
+        movie.setDirector(resource.getDirector());
         movie.setRating(resource.getRating());
+        movie.setImdbRating(resource.getImdbRating());
 
         return movie;
     }

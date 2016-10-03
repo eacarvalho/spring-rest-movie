@@ -1,21 +1,22 @@
 package br.com.iworks.movie.ws.v1.resource;
 
-import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
 @EqualsAndHashCode
@@ -31,9 +32,7 @@ public class MovieResource {
     @NotNull(message = "{validation.notnull}")
     private String originalTitle;
 
-    @Min(value = 0, message = "{validation.size}")
-    @Max(value = 500, message = "{validation.size}")
-    private Integer duration;
+    private String duration;
 
     @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
@@ -48,13 +47,13 @@ public class MovieResource {
 
     @NotNull(message = "{validation.notnull}")
     private String plot;
-    private String directors;
+    private String director;
 
     @Min(value = 0, message = "{validation.size}")
     @Max(value = 10, message = "{validation.size}")
     private int rating;
 
-    private OmdbApiResource omdbResource;
+    private String imdbRating;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     public void setType(TypeEnum type) {

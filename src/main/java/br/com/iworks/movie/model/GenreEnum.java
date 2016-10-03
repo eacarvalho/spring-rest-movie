@@ -40,7 +40,7 @@ public enum GenreEnum {
         GenreEnum[] types = GenreEnum.values();
 
         for (GenreEnum type : types) {
-            if (type.getDescription().equals(description)) {
+            if (type.getDescription().equalsIgnoreCase(description)) {
                 return type;
             }
         }

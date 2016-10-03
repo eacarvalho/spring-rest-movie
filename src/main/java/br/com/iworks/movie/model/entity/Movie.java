@@ -1,25 +1,28 @@
 package br.com.iworks.movie.model.entity;
 
-import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.util.Date;
+import java.util.List;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Document(collection = Movie.COLLECTION_NAME)
 @Data
@@ -43,9 +46,7 @@ public class Movie {
     private String title;
     private String originalTitle;
 
-    @Max(value = 500, message = "{validation.size}")
-    @Min(value = 0, message = "{validation.size}")
-    private Integer duration;
+    private String duration;
 
     @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
@@ -59,8 +60,9 @@ public class Movie {
 
     @NotNull(message = "{validation.notnull}")
     private String plot;
-    private String directors;
+    private String director;
     private int rating;
+    private String imdbRating;
 
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     public Date getReleasedDate() {

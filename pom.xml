@@ -26,6 +26,7 @@
         <apache.commons.version>3.4</apache.commons.version>
         <io.springfox.version>2.5.0</io.springfox.version>
         <httpclient.version>4.5.2</httpclient.version>
+        <jackson-datatype-jsr310.version>2.6.1</jackson-datatype-jsr310.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
 
         <!-- Extra configuration for RestTemplate -->
