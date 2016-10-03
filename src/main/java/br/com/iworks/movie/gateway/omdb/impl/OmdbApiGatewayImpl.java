@@ -1,24 +1,29 @@
 package br.com.iworks.movie.gateway.omdb.impl;
 
-import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
-import lombok.extern.slf4j.Slf4j;
+import java.net.URI;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
+import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * URL: http://www.omdbapi.com/
- *
+ * <p/>
  * Implementar consultar por séries como http://www.omdbapi.com/?t=Game of Thrones&Season=1
  * para trazer todas as datas de lançamentos dos episódios
- *
+ * <p/>
  * Implementar consulta com todos os filmes de determinado título
  * como http://www.omdbapi.com/?s=Batman&page=2
  */

@@ -14,6 +14,13 @@ gateway:
   omdb:
     url: http://www.omdbapi.com/
 
+proxy:
+  enabled: false
+  host: host
+  port: 8080
+  username: username
+  password: password
+
 # SPRING-BOOT-ACTUATOR (http://www.javabeat.net/spring-boot-actuator)
 endpoints:
   info:
