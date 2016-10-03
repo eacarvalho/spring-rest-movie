@@ -29,7 +29,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 @CompoundIndexes({
-        @CompoundIndex(name = "code_movie_idx", def = "{'code': 1}", unique = true)
+        @CompoundIndex(name = "code_movie_idx", def = "{'code': 1}", unique = true),
+        @CompoundIndex(name = "title_year_movie_idx", def = "{'title': 1, 'year': 1}", unique = true, sparse = true)
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {

@@ -1,6 +1,10 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +14,10 @@ import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import br.com.iworks.movie.model.entity.Movie;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
+@Slf4j
 public class OmdbResourceAssembler {
 
     public Movie toModel(OmdbApiResource resource) {
@@ -28,6 +34,7 @@ public class OmdbResourceAssembler {
         movie.setPlot(resource.getPlot());
         movie.setImdbRating(resource.getImdbRating());
         movie.setDirector(resource.getDirector());
+        movie.setReleasedDate(getReleasedDate(resource.getReleased()));
 
         if (StringUtils.isNoneBlank(resource.getYear())) {
             movie.setYear(Integer.parseInt(resource.getYear()));
@@ -45,5 +52,18 @@ public class OmdbResourceAssembler {
         }
 
         return movie;
+    }
+
+    private Date getReleasedDate(String releasedDate) {
+        Date date = null;
+        if (StringUtils.isNotBlank(releasedDate)) {
+            try {
+                DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+                date = dateFormat.parse(releasedDate);
+            } catch (ParseException e) {
+                log.error("Error converting releasedDate {}", releasedDate);
+            }
+        }
+        return date;
     }
 }

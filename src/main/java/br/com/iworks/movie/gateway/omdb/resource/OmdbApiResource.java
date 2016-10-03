@@ -2,6 +2,7 @@ package br.com.iworks.movie.gateway.omdb.resource;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,23 +19,32 @@ public class OmdbApiResource {
     @JsonProperty("Year")
     private String year;
 
-    @JsonProperty("Actors")
-    private String actors;
+    @JsonProperty("Released")
+    private String released;
 
-    @JsonProperty("Director")
-    private String director;
-
-    @JsonProperty("Plot")
-    private String plot;
-
-    @JsonProperty("Poster")
-    private String poster;
+    @JsonProperty("Runtime")
+    private String runtime;
 
     @JsonProperty("Genre")
     private String genre;
 
-    @JsonProperty("Runtime")
-    private String runtime;
+    @JsonProperty("Director")
+    private String director;
+
+    @JsonProperty("Writer")
+    private String writer;
+
+    @JsonProperty("Actors")
+    private String actors;
+
+    @JsonProperty("Plot")
+    private String plot;
+
+    @JsonProperty("Language")
+    private String language;
+
+    @JsonProperty("Poster")
+    private String poster;
 
     @JsonProperty("imdbRating")
     private String imdbRating;
