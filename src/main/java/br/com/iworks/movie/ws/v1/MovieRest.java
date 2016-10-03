@@ -1,11 +1,8 @@
 package br.com.iworks.movie.ws.v1;
 
-import br.com.iworks.movie.model.TypeEnum;
-import br.com.iworks.movie.model.entity.Movie;
-import br.com.iworks.movie.service.MovieService;
-import br.com.iworks.movie.ws.v1.assembler.MovieResourceAssembler;
-import br.com.iworks.movie.ws.v1.resource.MovieResource;
-import io.swagger.annotations.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +10,27 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import br.com.iworks.movie.model.TypeEnum;
+import br.com.iworks.movie.model.entity.Movie;
+import br.com.iworks.movie.service.MovieService;
+import br.com.iworks.movie.ws.v1.assembler.MovieResourceAssembler;
+import br.com.iworks.movie.ws.v1.resource.MovieResource;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/movies")
@@ -36,14 +49,11 @@ public class MovieRest {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 409, message = "Conflict")
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "movieResource", value = "Movie's json", required = false, dataType = "MovieResource", paramType = "body")
-    })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> create(@RequestBody @NotNull @Valid MovieResource movieResource) {
+    public ResponseEntity<MovieResource> create(@ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
         Movie movie = movieResourceAssembler.toModel(movieResource);
 
         return ResponseEntity
@@ -57,14 +67,12 @@ public class MovieRest {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path"),
-            @ApiImplicitParam(name = "movieResource", value = "Movie's json", required = false, dataType = "MovieResource", paramType = "body")
-    })
     @ResponseBody
     @RequestMapping(value = "/{code}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> update(@Valid @PathVariable Long code, @RequestBody @NotNull @Valid MovieResource movieResource) {
+    public ResponseEntity<MovieResource> update(@ApiParam(value = "Movie's code", required = true) @Valid @PathVariable Long code,
+                                                @ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
+
         Movie movie = movieResourceAssembler.toModel(movieResource);
         MovieResource resource = movieResourceAssembler.toResource(service.update(code, movie));
 
@@ -131,12 +139,9 @@ public class MovieRest {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path")
-    })
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> read(@PathVariable("code") @NotNull Long code) {
+    public ResponseEntity<MovieResource> read(@ApiParam(value = "Movie's code", required = true) @PathVariable("code") @NotNull Long code) {
         MovieResource resource = movieResourceAssembler.toResource(service.read(code));
 
         return ResponseEntity.ok().body(resource);
@@ -148,12 +153,9 @@ public class MovieRest {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "Movie's code", required = true, dataType = "long", paramType = "path")
-    })
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> delete(@PathVariable Long code) {
+    public ResponseEntity<MovieResource> delete(@ApiParam(value = "Movie's code", required = true) @PathVariable Long code) {
         MovieResource resource = movieResourceAssembler.toResource(service.delete(code));
 
         return ResponseEntity.ok().body(resource);

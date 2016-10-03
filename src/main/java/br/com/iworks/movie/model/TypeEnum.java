@@ -21,7 +21,7 @@ public enum TypeEnum {
         TypeEnum[] types = TypeEnum.values();
 
         for (TypeEnum type : types) {
-            if (type.getDescription().equals(description)) {
+            if (type.getDescription().equalsIgnoreCase(description)) {
                 return type;
             }
         }
