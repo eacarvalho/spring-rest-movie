@@ -36,6 +36,7 @@ public class MovieResourceAssembler {
         resource.setDirector(movie.getDirector());
         resource.setRating(movie.getRating());
         resource.setImdbRating(movie.getImdbRating());
+        resource.setImdbID(resource.getImdbID());
 
         return resource;
     }
@@ -85,6 +86,7 @@ public class MovieResourceAssembler {
         movie.setDirector(resource.getDirector());
         movie.setRating(resource.getRating());
         movie.setImdbRating(resource.getImdbRating());
+        movie.setImdbID(resource.getImdbID());
 
         return movie;
     }

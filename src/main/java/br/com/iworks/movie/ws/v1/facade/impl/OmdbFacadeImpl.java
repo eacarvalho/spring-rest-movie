@@ -31,8 +31,8 @@ public class OmdbFacadeImpl implements OmdbFacade {
     @Override
     public MovieResource createMovieByImdb(OmdbRequest omdbRequest) {
         OmdbApiResource omdbApiResource = omdbApiGateway.findByTitle(omdbRequest.getTitle());
-        Movie movie = movieService.create(omdbResourceAssembler.toModel(omdbApiResource));
+        Movie movie = omdbResourceAssembler.toModel(omdbApiResource);
         movie.setRating(omdbRequest.getRating());
-        return movieResourceAssembler.toResource(movie);
+        return movieResourceAssembler.toResource(movieService.create(movie));
     }
 }

@@ -63,6 +63,7 @@ public class Movie {
     private String director;
     private int rating;
     private String imdbRating;
+    private String imdbID;
 
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     public Date getReleasedDate() {

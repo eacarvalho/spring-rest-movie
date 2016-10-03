@@ -21,9 +21,8 @@ import br.com.iworks.movie.ws.v1.facade.OmdbFacade;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
 import br.com.iworks.movie.ws.v1.resource.OmdbRequest;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -44,13 +43,10 @@ public class OmdbRest {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 409, message = "Conflict")
     })
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "omdbRequest", value = "IMDB movie's json", required = false, dataType = "OmdbRequest", paramType = "body")
-    })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> create(@RequestBody @NotNull @Valid OmdbRequest omdbRequest) {
+    public ResponseEntity<MovieResource> create(@ApiParam(value = "IMDB movie's json", required = true) @RequestBody @NotNull @Valid OmdbRequest omdbRequest) {
 
         return ResponseEntity
                 .ok()
@@ -62,12 +58,12 @@ public class OmdbRest {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "title", value = "Movie's english title", required = true, dataType = "string", paramType = "path")
-    })
     @ResponseBody()
     @RequestMapping(value = "/{title}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OmdbApiResource> read(@PathVariable("title") @NotNull String title) {
-        return ResponseEntity.ok().body(gateway.findByTitle(title));
+    public ResponseEntity<OmdbApiResource> read(@ApiParam(value = "Movie's english title", required = true) @PathVariable("title") @NotNull String title) {
+
+        return ResponseEntity
+                .ok()
+                .body(gateway.findByTitle(title));
     }
 }
