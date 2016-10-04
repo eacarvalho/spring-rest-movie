@@ -34,8 +34,10 @@ public class OmdbResourceAssembler {
         movie.setType(TypeEnum.create(resource.getType()));
         movie.setPlot(resource.getPlot());
         movie.setImdbRating(resource.getImdbRating());
+        movie.setImdbID(resource.getImdbID());
         movie.setDirector(resource.getDirector());
         movie.setReleasedDate(getReleasedDate(resource.getReleased()));
+        movie.setPoster(resource.getPoster());
 
         if (StringUtils.isNoneBlank(resource.getYear())) {
             movie.setYear(Integer.parseInt(resource.getYear()));

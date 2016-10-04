@@ -46,6 +46,7 @@ public class MovieResource {
 
     private String imdbRating;
     private String imdbID;
+    private String poster;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     public void setType(TypeEnum type) {

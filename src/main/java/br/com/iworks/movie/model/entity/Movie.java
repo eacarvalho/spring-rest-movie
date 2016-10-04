@@ -59,4 +59,6 @@ public class Movie {
     private int rating;
     private String imdbRating;
     private String imdbID;
+
+    private String poster;
 }
