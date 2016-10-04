@@ -55,4 +55,7 @@ public class OmdbApiResource {
 
     @JsonProperty("Type")
     private String type;
+
+    @JsonProperty("totalSeasons")
+    private String totalSeasons;
 }

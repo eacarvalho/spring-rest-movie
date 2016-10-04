@@ -8,6 +8,7 @@ import com.google.common.base.CaseFormat;
 
 import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
 import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
 import br.com.iworks.movie.service.OmdbApiService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,8 +38,23 @@ public class OmdbApiServiceImpl implements OmdbApiService {
         return isNull(omdbApiResource) ? omdbApiResource : null;
     }
 
+    @Override
+    public OmdbApiSeasonResource findSerie(String title, String season) {
+        OmdbApiSeasonResource omdbApiSeasonResource = null;
+
+        if (StringUtils.isNoneBlank(title) && StringUtils.isNoneBlank(season)) {
+            omdbApiSeasonResource = omdbApiGateway.findSerieByTitleAndSeason(this.getFormatTitle(title), season);
+        }
+
+        return isNull(omdbApiSeasonResource) ? omdbApiSeasonResource : null;
+    }
+
     private boolean isNull(final OmdbApiResource omdbApiResource) {
-        return omdbApiResource == null || StringUtils.isNoneBlank(omdbApiResource.getTitle());
+        return omdbApiResource == null || StringUtils.isNotBlank(omdbApiResource.getTitle());
+    }
+
+    private boolean isNull(final OmdbApiSeasonResource omdbApiSeasonResource) {
+        return omdbApiSeasonResource == null || StringUtils.isNotBlank(omdbApiSeasonResource.getTitle());
     }
 
     private String getFormatTitle(final String originalTitle) {
