@@ -23,6 +23,7 @@ import br.com.iworks.movie.model.TypeEnum;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.service.MovieService;
 import br.com.iworks.movie.ws.v1.assembler.MovieResourceAssembler;
+import br.com.iworks.movie.ws.v1.facade.MovieFacade;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,6 +37,9 @@ import io.swagger.annotations.ApiResponses;
 @RequestMapping("/movies")
 @Api("/movies")
 public class MovieRestController {
+
+    @Autowired
+    private MovieFacade movieFacade;
 
     @Autowired
     private MovieService service;
@@ -54,11 +58,9 @@ public class MovieRestController {
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MovieResource> create(@ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
-        Movie movie = movieResourceAssembler.toModel(movieResource);
-
         return ResponseEntity
                 .ok()
-                .body(movieResourceAssembler.toResource(service.create(movie)));
+                .body(movieFacade.create(movieResource));
     }
 
     @ApiOperation(value = "Update a movie")
@@ -73,10 +75,9 @@ public class MovieRestController {
     public ResponseEntity<MovieResource> update(@ApiParam(value = "Movie's code", required = true) @Valid @PathVariable Long code,
                                                 @ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
 
-        Movie movie = movieResourceAssembler.toModel(movieResource);
-        MovieResource resource = movieResourceAssembler.toResource(service.update(code, movie));
-
-        return ResponseEntity.ok().body(resource);
+        return ResponseEntity
+                .ok()
+                .body(movieFacade.update(code, movieResource));
     }
 
     @ApiOperation(value = "Get the list of movies")

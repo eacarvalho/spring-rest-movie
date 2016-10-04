@@ -51,11 +51,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
 
             log.info("Resquest to Omdb: {}", target.toString());
 
-            ResponseEntity<OmdbApiResource> omdbApiResource = restTemplate.exchange(
-                    target,
-                    HttpMethod.GET,
-                    new HttpEntity<>(getHttpHeaders()),
-                    OmdbApiResource.class);
+            ResponseEntity<OmdbApiResource> omdbApiResource = callAPI(target);
 
             resource = omdbApiResource.getBody();
         } catch (HttpStatusCodeException ex) {
@@ -64,6 +60,65 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         }
 
         return resource;
+    }
+
+    @Override
+    public OmdbApiResource findByTitleAndYear(String title, Integer year) {
+        OmdbApiResource resource = new OmdbApiResource();
+
+        try {
+            URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("t", title)
+                    .queryParam("y", year)
+                    .queryParam("plot", "short")
+                    .queryParam("r", "json")
+                    .build()
+                    .toUri();
+
+            log.info("Resquest to Omdb: {}", target.toString());
+
+            ResponseEntity<OmdbApiResource> omdbApiResource = callAPI(target);
+
+            resource = omdbApiResource.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
+                    ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        }
+
+        return resource;
+    }
+
+    @Override
+    public OmdbApiResource findByImdbID(String imdbID) {
+        OmdbApiResource resource = new OmdbApiResource();
+
+        try {
+            URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("i", imdbID)
+                    .queryParam("plot", "short")
+                    .queryParam("r", "json")
+                    .build()
+                    .toUri();
+
+            log.info("Resquest to Omdb: {}", target.toString());
+
+            ResponseEntity<OmdbApiResource> omdbApiResource = callAPI(target);
+
+            resource = omdbApiResource.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
+                    ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        }
+
+        return resource;
+    }
+
+    private ResponseEntity<OmdbApiResource> callAPI(URI target) {
+        return restTemplate.exchange(
+                target,
+                HttpMethod.GET,
+                new HttpEntity<>(getHttpHeaders()),
+                OmdbApiResource.class);
     }
 
     private HttpHeaders getHttpHeaders() {

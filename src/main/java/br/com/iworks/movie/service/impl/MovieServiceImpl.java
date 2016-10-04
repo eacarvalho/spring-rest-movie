@@ -47,7 +47,8 @@ public class MovieServiceImpl implements MovieService {
             this.validateMovie(movie);
 
             movie.setCode(counterService.getNextSequence(Movie.COLLECTION_NAME));
-            movie.setRegistrationDate(new Date());
+            movie.setCreatedDate(new Date());
+
             movie = repo.save(movie);
         } catch (Exception e) {
             throw movieException(movie, e);
@@ -66,7 +67,7 @@ public class MovieServiceImpl implements MovieService {
 
                 movie.setId(savedMovie.getId());
                 movie.setCode(savedMovie.getCode());
-                movie.setRegistrationDate(savedMovie.getRegistrationDate());
+                movie.setCreatedDate(savedMovie.getCreatedDate());
 
                 repo.save(movie);
 

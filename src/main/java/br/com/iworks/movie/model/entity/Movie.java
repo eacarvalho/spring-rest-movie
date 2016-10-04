@@ -43,7 +43,7 @@ public class Movie {
     @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
     private List<GenreEnum> genres;
-    private Date registrationDate;
+    private Date createdDate;
     private Date releasedDate;
 
     @Min(value = 1800, message = "{validation.size}")

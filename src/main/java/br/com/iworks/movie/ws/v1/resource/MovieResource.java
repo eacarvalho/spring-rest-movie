@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,9 +23,7 @@ public class MovieResource {
 
     private Long code;
 
-    @NotNull(message = "{validation.notnull}")
     private String title;
-
     private String originalTitle;
 
     private String duration;

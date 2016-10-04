@@ -71,7 +71,7 @@ public class MovieServiceImplTest {
     public void successCreateMovie() {
         Movie mockMovie = this.getMovie();
 
-        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCreatedDate());
         assertNull(mockMovie.getCode());
         when(counterService.getNextSequence(Movie.COLLECTION_NAME)).thenReturn(1L);
         when(repo.save(any(Movie.class))).thenReturn(mockMovie);
@@ -82,8 +82,8 @@ public class MovieServiceImplTest {
         assertThat(movie.getCode(), is(1L));
         assertThat(movie.getType(), is(TypeEnum.MOVIE));
         assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
-        assertNotNull(movie.getRegistrationDate());
-        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(movie.getCreatedDate());
+        assertNotNull(mockMovie.getCreatedDate());
         assertNotNull(mockMovie.getCode());
     }
 
@@ -104,13 +104,13 @@ public class MovieServiceImplTest {
     public void successUpdateMovie() {
         Movie mockMovie = this.getMovie();
 
-        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCreatedDate());
         assertNull(mockMovie.getCode());
         assertNull(mockMovie.getId());
 
         mockMovie.setCode(1L);
         mockMovie.setId("id");
-        mockMovie.setRegistrationDate(new Date());
+        mockMovie.setCreatedDate(new Date());
 
         when(service.read(any(Long.class))).thenReturn(mockMovie);
         when(repo.save(any(Movie.class))).thenReturn(mockMovie);
@@ -122,8 +122,8 @@ public class MovieServiceImplTest {
         assertThat(movie.getCode(), is(1L));
         assertThat(movie.getType(), is(TypeEnum.MOVIE));
         assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
-        assertNotNull(movie.getRegistrationDate());
-        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(movie.getCreatedDate());
+        assertNotNull(mockMovie.getCreatedDate());
         assertNotNull(mockMovie.getCode());
     }
 
@@ -131,7 +131,7 @@ public class MovieServiceImplTest {
     public void errorCodeNotFoundUpdateMovie() {
         Movie mockMovie = this.getMovie();
 
-        assertNull(mockMovie.getRegistrationDate());
+        assertNull(mockMovie.getCreatedDate());
         assertNull(mockMovie.getCode());
         assertNull(mockMovie.getId());
 
@@ -165,7 +165,7 @@ public class MovieServiceImplTest {
 
         mockMovie.setCode(1L);
         mockMovie.setId("id");
-        mockMovie.setRegistrationDate(new Date());
+        mockMovie.setCreatedDate(new Date());
 
         when(service.read(any(Long.class))).thenReturn(mockMovie);
 
@@ -176,8 +176,8 @@ public class MovieServiceImplTest {
         assertThat(movie.getCode(), is(1L));
         assertThat(movie.getType(), is(TypeEnum.MOVIE));
         assertThat(movie.getGenres(), is(Lists.newArrayList(GenreEnum.ACTION)));
-        assertNotNull(movie.getRegistrationDate());
-        assertNotNull(mockMovie.getRegistrationDate());
+        assertNotNull(movie.getCreatedDate());
+        assertNotNull(mockMovie.getCreatedDate());
         assertNotNull(mockMovie.getCode());
     }
 
@@ -197,7 +197,7 @@ public class MovieServiceImplTest {
 
         mockMovie.setCode(1L);
         mockMovie.setId("id");
-        mockMovie.setRegistrationDate(new Date());
+        mockMovie.setCreatedDate(new Date());
 
         Pageable pageable = new PageRequest(1, 1);
         Page<Movie> mockMovies = new PageImpl<>(Lists.newArrayList(mockMovie), pageable, 1L);
@@ -219,7 +219,7 @@ public class MovieServiceImplTest {
 
         mockMovie.setCode(1L);
         mockMovie.setId("id");
-        mockMovie.setRegistrationDate(new Date());
+        mockMovie.setCreatedDate(new Date());
 
         Pageable pageable = new PageRequest(1, 1);
         Page<Movie> mockMovies = new PageImpl<>(Lists.newArrayList(mockMovie), pageable, 1L);
