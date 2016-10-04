@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/omdb-movies")
 @Api("/omdb-movies")
-public class OmdbRest {
+public class OmdbRestController {
 
     @Autowired
     private OmdbApiGateway gateway;

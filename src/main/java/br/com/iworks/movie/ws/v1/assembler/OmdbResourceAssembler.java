@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
@@ -58,7 +59,7 @@ public class OmdbResourceAssembler {
         Date date = null;
         if (StringUtils.isNotBlank(releasedDate)) {
             try {
-                DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+                DateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
                 date = dateFormat.parse(releasedDate);
             } catch (ParseException e) {
                 log.error("Error converting releasedDate {}", releasedDate);

@@ -1,12 +1,22 @@
 package br.com.iworks.movie.service.impl;
 
-import br.com.iworks.movie.exceptions.MovieException;
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import br.com.iworks.movie.model.entity.Movie;
-import br.com.iworks.movie.repository.MovieRepository;
-import br.com.iworks.movie.service.CounterService;
-import com.google.common.collect.Lists;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Date;
+import java.util.Locale;
+
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,15 +29,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import java.util.Date;
-import java.util.Locale;
+import com.google.common.collect.Lists;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import br.com.iworks.movie.exceptions.MovieException;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import br.com.iworks.movie.model.entity.Movie;
+import br.com.iworks.movie.repository.MovieRepository;
+import br.com.iworks.movie.service.CounterService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MovieServiceImplTest {

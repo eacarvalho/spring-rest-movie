@@ -35,7 +35,7 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 @RequestMapping("/movies")
 @Api("/movies")
-public class MovieRest {
+public class MovieRestController {
 
     @Autowired
     private MovieService service;

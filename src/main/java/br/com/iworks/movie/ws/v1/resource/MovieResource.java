@@ -15,11 +15,9 @@ import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieResource {
@@ -29,12 +27,9 @@ public class MovieResource {
     @NotNull(message = "{validation.notnull}")
     private String title;
 
-    @NotNull(message = "{validation.notnull}")
     private String originalTitle;
 
     private String duration;
-
-    @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
     private List<GenreEnum> genres;
 
@@ -42,15 +37,14 @@ public class MovieResource {
     private Date releasedDate;
 
     @Min(value = 1800, message = "{validation.size}")
-    @Max(value = 9999, message = "{validation.size}")
+    @Max(value = 3000, message = "{validation.size}")
     private Integer year;
 
-    @NotNull(message = "{validation.notnull}")
     private String plot;
     private String director;
 
     @Min(value = 0, message = "{validation.size}")
-    @Max(value = 10, message = "{validation.size}")
+    @Max(value = 5, message = "{validation.size}")
     private int rating;
 
     private String imdbRating;
