@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dmongo.host=$MONGO_HOST -Dmongo.port=$MONGO_PORT -Dmongo.database=$MONGO_DATABASE -Dmongo.username=$MONGO_USERNAME -Dmongo.password=$MONGO_PASSWORD -jar target/spring-rest-movie-0.0.1-SNAPSHOT.jar
+web: java -Dspring.data.mongodb.uri=$MONGO_URI -jar target/spring-rest-movie-0.0.1-SNAPSHOT.jar
