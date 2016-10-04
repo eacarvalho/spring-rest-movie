@@ -38,10 +38,7 @@ public class OmdbResourceAssembler {
         movie.setDirector(resource.getDirector());
         movie.setReleasedDate(getReleasedDate(resource.getReleased()));
         movie.setPoster(resource.getPoster());
-
-        if (StringUtils.isNoneBlank(resource.getYear())) {
-            movie.setYear(Integer.parseInt(resource.getYear()));
-        }
+        movie.setYear(this.getYear(resource.getYear()));
 
         if (StringUtils.isNoneBlank(resource.getGenre())) {
             String[] genres = resource.getGenre().split(",");
@@ -68,5 +65,17 @@ public class OmdbResourceAssembler {
             }
         }
         return date;
+    }
+
+    private Integer getYear(String resourceYear) {
+        Integer year = null;
+        if (StringUtils.isNoneBlank(resourceYear)) {
+            try {
+                year = Integer.parseInt(resourceYear);
+            } catch (Exception e) {
+                log.error("Error converting year {}", resourceYear);
+            }
+        }
+        return year;
     }
 }

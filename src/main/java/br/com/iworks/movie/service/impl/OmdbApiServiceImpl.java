@@ -39,10 +39,10 @@ public class OmdbApiServiceImpl implements OmdbApiService {
     }
 
     @Override
-    public OmdbApiSeasonResource findSerie(String title, String season) {
+    public OmdbApiSeasonResource findSeason(String title, Integer season) {
         OmdbApiSeasonResource omdbApiSeasonResource = null;
 
-        if (StringUtils.isNoneBlank(title) && StringUtils.isNoneBlank(season)) {
+        if (StringUtils.isNoneBlank(title) && season != null) {
             omdbApiSeasonResource = omdbApiGateway.findSerieByTitleAndSeason(this.getFormatTitle(title), season);
         }
 

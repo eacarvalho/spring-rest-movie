@@ -13,17 +13,17 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@Document(collection = Serie.COLLECTION_NAME)
+@Document(collection = Season.COLLECTION_NAME)
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @CompoundIndexes({
-        @CompoundIndex(name = "code_serie_idx", def = "{'code': 1}", unique = true),
-        @CompoundIndex(name = "episode_serie_idx", def = "{'episodes.episode': 1}", unique = true, sparse = true)
+        @CompoundIndex(name = "code_season_idx", def = "{'code': 1}", unique = true),
+        @CompoundIndex(name = "title_season_idx", def = "{'title': 1}", unique = true)
 })
-public class Serie {
+public class Season {
 
-    public static final String COLLECTION_NAME = "series";
+    public static final String COLLECTION_NAME = "seasons";
 
     @Id
     private String id;
@@ -33,9 +33,7 @@ public class Serie {
     @NotNull(message = "{validation.notnull}")
     private String title;
     @NotNull(message = "{validation.notnull}")
-    private String originalTitle;
-    @NotNull(message = "{validation.notnull}")
-    private String season;
+    private Integer seasonNo;
 
     private String totalSeasons;
     private List<Episode> episodes;

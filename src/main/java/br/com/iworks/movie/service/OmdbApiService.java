@@ -6,5 +6,5 @@ import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
 public interface OmdbApiService {
 
     OmdbApiResource findMovie(String imdbID, String originalTitle, Integer year);
-    OmdbApiSeasonResource findSerie(String title, String season);
+    OmdbApiSeasonResource findSeason(String title, Integer season);
 }

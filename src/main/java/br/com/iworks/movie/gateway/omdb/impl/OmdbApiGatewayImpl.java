@@ -115,7 +115,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
     }
 
     @Override
-    public OmdbApiSeasonResource findSerieByTitleAndSeason(String title, String season) {
+    public OmdbApiSeasonResource findSerieByTitleAndSeason(String title, Integer season) {
         OmdbApiSeasonResource resource = new OmdbApiSeasonResource();
 
         try {
