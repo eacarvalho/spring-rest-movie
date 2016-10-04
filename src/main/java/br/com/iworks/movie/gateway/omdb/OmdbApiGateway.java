@@ -8,5 +8,5 @@ public interface OmdbApiGateway {
     OmdbApiResource findByTitle(String title);
     OmdbApiResource findByTitleAndYear(String title, Integer year);
     OmdbApiResource findByImdbID(String imdbID);
-    OmdbApiSeasonResource findSerieByTitleAndSeason(String title, String season);
+    OmdbApiSeasonResource findSerieByTitleAndSeason(String title, Integer season);
 }
