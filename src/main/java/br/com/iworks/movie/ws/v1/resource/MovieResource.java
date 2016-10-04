@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,26 +14,19 @@ import br.com.iworks.movie.config.util.JsonDateTimeSerializer;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@EqualsAndHashCode
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieResource {
 
     private Long code;
 
-    @NotNull(message = "{validation.notnull}")
     private String title;
-
-    @NotNull(message = "{validation.notnull}")
     private String originalTitle;
 
     private String duration;
-
-    @NotNull(message = "{validation.notnull}")
     private TypeEnum type;
     private List<GenreEnum> genres;
 
@@ -42,19 +34,19 @@ public class MovieResource {
     private Date releasedDate;
 
     @Min(value = 1800, message = "{validation.size}")
-    @Max(value = 9999, message = "{validation.size}")
+    @Max(value = 3000, message = "{validation.size}")
     private Integer year;
 
-    @NotNull(message = "{validation.notnull}")
     private String plot;
     private String director;
 
     @Min(value = 0, message = "{validation.size}")
-    @Max(value = 10, message = "{validation.size}")
+    @Max(value = 5, message = "{validation.size}")
     private int rating;
 
     private String imdbRating;
     private String imdbID;
+    private String poster;
 
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     public void setType(TypeEnum type) {

@@ -1,26 +1,31 @@
 package br.com.iworks.movie.service.impl;
 
+import java.util.Date;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+
+import br.com.iworks.movie.exceptions.ConflictException;
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.model.entity.QMovie;
 import br.com.iworks.movie.repository.MovieRepository;
 import br.com.iworks.movie.service.CounterService;
 import br.com.iworks.movie.service.MovieService;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.Calendar;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -44,7 +49,8 @@ public class MovieServiceImpl implements MovieService {
             this.validateMovie(movie);
 
             movie.setCode(counterService.getNextSequence(Movie.COLLECTION_NAME));
-            movie.setRegistrationDate(Calendar.getInstance().getTime());
+            movie.setCreatedDate(new Date());
+
             movie = repo.save(movie);
         } catch (Exception e) {
             throw movieException(movie, e);
@@ -63,7 +69,7 @@ public class MovieServiceImpl implements MovieService {
 
                 movie.setId(savedMovie.getId());
                 movie.setCode(savedMovie.getCode());
-                movie.setRegistrationDate(savedMovie.getRegistrationDate());
+                movie.setCreatedDate(savedMovie.getCreatedDate());
 
                 repo.save(movie);
 
@@ -117,8 +123,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     private MovieException movieException(Movie movie, Exception ex) {
-        return new MovieException(messageSource.getMessage("movie.save.error",
-                new Object[]{movie.getTitle(), ex.getMessage()}, LocaleContextHolder
-                        .getLocale()));
+        String msgError = messageSource.getMessage("movie.save.error", new Object[]{movie.getTitle(), ex.getMessage()}, LocaleContextHolder.getLocale());
+
+        if (DuplicateKeyException.class.isInstance(ex)) {
+            return new ConflictException(msgError);
+        } else {
+            return new MovieException(msgError);
+        }
     }
 }

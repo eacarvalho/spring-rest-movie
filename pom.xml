@@ -27,6 +27,7 @@
         <io.springfox.version>2.5.0</io.springfox.version>
         <httpclient.version>4.5.2</httpclient.version>
         <jackson-datatype-jsr310.version>2.6.1</jackson-datatype-jsr310.version>
+        <guava.version>19.0</guava.version>
     </properties>
 
     <dependencies>
@@ -103,6 +104,13 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>${apache.commons.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
 
         <dependency>

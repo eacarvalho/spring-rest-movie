@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public enum TypeEnum {
     MOVIE("Movie"),
     SERIE("Series"),
+    EPISODE("Episode"),
     CARTOONS("Cartoons");
 
     private String description;

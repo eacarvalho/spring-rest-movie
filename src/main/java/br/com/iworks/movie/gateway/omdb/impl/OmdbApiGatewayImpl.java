@@ -16,6 +16,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
 import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -51,11 +52,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
 
             log.info("Resquest to Omdb: {}", target.toString());
 
-            ResponseEntity<OmdbApiResource> omdbApiResource = restTemplate.exchange(
-                    target,
-                    HttpMethod.GET,
-                    new HttpEntity<>(getHttpHeaders()),
-                    OmdbApiResource.class);
+            ResponseEntity<OmdbApiResource> omdbApiResource = callApiResource(target);
 
             resource = omdbApiResource.getBody();
         } catch (HttpStatusCodeException ex) {
@@ -64,6 +61,97 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         }
 
         return resource;
+    }
+
+    @Override
+    public OmdbApiResource findByTitleAndYear(String title, Integer year) {
+        OmdbApiResource resource = new OmdbApiResource();
+
+        try {
+            URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("t", title)
+                    .queryParam("y", year)
+                    .queryParam("plot", "short")
+                    .queryParam("r", "json")
+                    .build()
+                    .toUri();
+
+            log.info("Resquest to Omdb: {}", target.toString());
+
+            ResponseEntity<OmdbApiResource> omdbApiResource = callApiResource(target);
+
+            resource = omdbApiResource.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
+                    ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        }
+
+        return resource;
+    }
+
+    @Override
+    public OmdbApiResource findByImdbID(String imdbID) {
+        OmdbApiResource resource = new OmdbApiResource();
+
+        try {
+            URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("i", imdbID)
+                    .queryParam("plot", "short")
+                    .queryParam("r", "json")
+                    .build()
+                    .toUri();
+
+            log.info("Resquest to Omdb: {}", target.toString());
+
+            ResponseEntity<OmdbApiResource> omdbApiResource = callApiResource(target);
+
+            resource = omdbApiResource.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
+                    ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        }
+
+        return resource;
+    }
+
+    @Override
+    public OmdbApiSeasonResource findSerieByTitleAndSeason(String title, String season) {
+        OmdbApiSeasonResource resource = new OmdbApiSeasonResource();
+
+        try {
+            URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("t", title)
+                    .queryParam("Season", season)
+                    .build()
+                    .toUri();
+
+            log.info("Resquest to Omdb: {}", target.toString());
+
+            ResponseEntity<OmdbApiSeasonResource> omdbApiResource = callApiSeasonResource(target);
+
+            resource = omdbApiResource.getBody();
+        } catch (HttpStatusCodeException ex) {
+            log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
+                    ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        }
+
+        return resource;
+    }
+
+    private ResponseEntity<OmdbApiResource> callApiResource(URI target) {
+        return restTemplate.exchange(
+                target,
+                HttpMethod.GET,
+                new HttpEntity<>(getHttpHeaders()),
+                OmdbApiResource.class);
+    }
+
+    private ResponseEntity<OmdbApiSeasonResource> callApiSeasonResource(URI target) {
+        return restTemplate.exchange(
+                target,
+                HttpMethod.GET,
+                new HttpEntity<>(getHttpHeaders()),
+                OmdbApiSeasonResource.class);
     }
 
     private HttpHeaders getHttpHeaders() {
