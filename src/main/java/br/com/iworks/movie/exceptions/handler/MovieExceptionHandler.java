@@ -1,10 +1,12 @@
 package br.com.iworks.movie.exceptions.handler;
 
+import br.com.iworks.movie.exceptions.ConflictException;
 import br.com.iworks.movie.exceptions.ListNotFoundException;
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,7 +32,7 @@ public class MovieExceptionHandler {
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MovieException.class)
     @ResponseBody
-    public MessageError handleLojistaException(MovieException ex) {
+    public MessageError handleException(MovieException ex) {
         log.error("Business error: {}", ExceptionUtils.getMessage(ex));
         return new MessageError(ex.getLocalizedMessage());
     }
@@ -61,6 +63,14 @@ public class MovieExceptionHandler {
             errors.add(error);
         }
         return new MessageError(errors);
+    }
+
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    @ExceptionHandler(ConflictException.class)
+    @ResponseBody
+    public MessageError handleDuplicateKeyException(ConflictException ex) {
+        log.error("Duplicate key error: {}", ExceptionUtils.getMessage(ex));
+        return new MessageError(ex.getLocalizedMessage());
     }
 
     @ResponseBody

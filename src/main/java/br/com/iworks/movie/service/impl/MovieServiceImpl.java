@@ -10,6 +10,7 @@ import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import org.springframework.util.CollectionUtils;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 
+import br.com.iworks.movie.exceptions.ConflictException;
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.model.entity.QMovie;
@@ -121,8 +123,12 @@ public class MovieServiceImpl implements MovieService {
     }
 
     private MovieException movieException(Movie movie, Exception ex) {
-        return new MovieException(messageSource.getMessage("movie.save.error",
-                new Object[]{movie.getTitle(), ex.getMessage()}, LocaleContextHolder
-                        .getLocale()));
+        String msgError = messageSource.getMessage("movie.save.error", new Object[]{movie.getTitle(), ex.getMessage()}, LocaleContextHolder.getLocale());
+
+        if (DuplicateKeyException.class.isInstance(ex)) {
+            return new ConflictException(msgError);
+        } else {
+            return new MovieException(msgError);
+        }
     }
 }
