@@ -34,15 +34,15 @@ public class SeasonResourceAssembler {
         return resource;
     }
 
-    public Season toModel(String title, Integer number, SeasonResource resource) {
+    public Season toModel(SeasonResource resource) {
         if (resource == null) {
             throw new IllegalArgumentException("Movie not found");
         }
 
         Season season = new Season();
 
-        season.setTitle(title);
-        season.setNumber(number);
+        season.setTitle(resource.getTitle());
+        season.setNumber(resource.getNumber());
         season.setTotalSeasons(resource.getTotalSeasons());
         season.setEpisodes(toModel(resource.getEpisodes()));
 
