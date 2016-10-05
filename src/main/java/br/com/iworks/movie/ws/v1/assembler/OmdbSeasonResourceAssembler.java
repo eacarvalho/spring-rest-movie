@@ -24,7 +24,7 @@ public class OmdbSeasonResourceAssembler {
         Season season = new Season();
 
         season.setTitle(resource.getTitle());
-        season.setSeasonNo(StringUtils.isNotBlank(resource.getSeason()) ? Integer.parseInt(resource.getSeason()) : null);
+        season.setNumber(StringUtils.isNotBlank(resource.getSeason()) ? Integer.parseInt(resource.getSeason()) : null);
         season.setTotalSeasons(resource.getTotalSeasons());
         season.setEpisodes(toModel(resource.getEpisodes()));
 
@@ -37,7 +37,7 @@ public class OmdbSeasonResourceAssembler {
         if (resource != null) {
             episode.setTitle(resource.getTitle());
             episode.setReleased(resource.getReleased());
-            episode.setEpisode(resource.getEpisode());
+            episode.setNumber(resource.getEpisode());
             episode.setImdbRating(resource.getImdbRating());
             episode.setImdbID(resource.getImdbID());
         }

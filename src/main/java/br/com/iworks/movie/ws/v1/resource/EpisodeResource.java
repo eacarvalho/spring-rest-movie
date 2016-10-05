@@ -11,7 +11,7 @@ public class EpisodeResource {
 
     private String title;
     private String released;
-    private String episode;
+    private Integer number;
     private String imdbRating;
     private String imdbID;
 }

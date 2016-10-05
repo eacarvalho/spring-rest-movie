@@ -3,8 +3,13 @@ package br.com.iworks.movie.ws.v1.assembler;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
+import br.com.iworks.movie.exceptions.ListNotFoundException;
 import br.com.iworks.movie.exceptions.ResourceNotFoundException;
 import br.com.iworks.movie.model.entity.Episode;
 import br.com.iworks.movie.model.entity.Season;
@@ -22,26 +27,40 @@ public class SeasonResourceAssembler {
         SeasonResource resource = new SeasonResource();
 
         resource.setTitle(season.getTitle());
-        resource.setSeason(season.getSeasonNo());
+        resource.setNumber(season.getNumber());
         resource.setTotalSeasons(season.getTotalSeasons());
         resource.setEpisodes(toResource(season.getEpisodes()));
 
         return resource;
     }
 
-    public Season toModel(SeasonResource resource) {
+    public Season toModel(String title, Integer number, SeasonResource resource) {
         if (resource == null) {
             throw new IllegalArgumentException("Movie not found");
         }
 
         Season season = new Season();
 
-        season.setTitle(resource.getTitle());
-        season.setSeasonNo(resource.getSeason());
+        season.setTitle(title);
+        season.setNumber(number);
         season.setTotalSeasons(resource.getTotalSeasons());
         season.setEpisodes(toModel(resource.getEpisodes()));
 
         return season;
+    }
+
+    public Page<SeasonResource> toPage(Page<Season> seasonPage) {
+        if (seasonPage == null || CollectionUtils.isEmpty(seasonPage.getContent())) {
+            throw new ListNotFoundException("Seasons not found");
+        }
+
+        List<SeasonResource> resources = new ArrayList<>();
+
+        if (seasonPage.hasContent()) {
+            seasonPage.getContent().forEach(movie -> resources.add(toResource(movie)));
+        }
+
+        return new PageImpl<>(resources, new PageRequest(seasonPage.getNumber(), seasonPage.getSize(), seasonPage.getSort()), seasonPage.getTotalElements());
     }
 
     private Episode toModel(final EpisodeResource resource) {
@@ -50,7 +69,7 @@ public class SeasonResourceAssembler {
         if (resource != null) {
             episode.setTitle(resource.getTitle());
             episode.setReleased(resource.getReleased());
-            episode.setEpisode(resource.getEpisode());
+            episode.setNumber(resource.getNumber());
             episode.setImdbRating(resource.getImdbRating());
             episode.setImdbID(resource.getImdbID());
         }
@@ -64,7 +83,7 @@ public class SeasonResourceAssembler {
         if (episode != null) {
             resource.setTitle(episode.getTitle());
             resource.setReleased(episode.getReleased());
-            resource.setEpisode(episode.getEpisode());
+            resource.setNumber(episode.getNumber());
             resource.setImdbRating(episode.getImdbRating());
             resource.setImdbID(episode.getImdbID());
         }
