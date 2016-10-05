@@ -22,7 +22,7 @@ public class Episode {
 
     @Min(value = 0, message = "{validation.size}")
     @Max(value = 5, message = "{validation.size}")
-    private int rating;
+    private Integer rating;
 
     private boolean watched;
 }
