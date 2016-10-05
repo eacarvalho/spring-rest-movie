@@ -1,11 +1,14 @@
 package br.com.iworks.movie.ws.v1.facade.impl;
 
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
+import br.com.iworks.movie.model.entity.Episode;
 import br.com.iworks.movie.model.entity.Season;
 import br.com.iworks.movie.service.OmdbApiService;
 import br.com.iworks.movie.service.SeasonService;
@@ -55,7 +58,7 @@ public class SeasonFacadeImpl implements SeasonFacade {
 
             season.setRating(resource.getRating());
 
-            this.fillRatingAndWatched(resource, season);
+            setRatingAndWatched(resource.getEpisodes(), season.getEpisodes());
         } else {
             season = seasonResourceAssembler.toModel(resource);
         }
@@ -67,18 +70,27 @@ public class SeasonFacadeImpl implements SeasonFacade {
         return season;
     }
 
-    private void fillRatingAndWatched(SeasonResource resource, Season season) {
-        if (!CollectionUtils.isEmpty(season.getEpisodes())) {
-            season.getEpisodes().forEach(episode -> {
-                if (!CollectionUtils.isEmpty(resource.getEpisodes())) {
-                    for (EpisodeResource episodeResource : resource.getEpisodes()) {
-                        if (episode.getTitle().equalsIgnoreCase(episodeResource.getTitle()) && episode.getNumber().equals(episodeResource.getNumber())) {
-                            episode.setRating(episodeResource.getRating());
-                            episode.setWatched(episodeResource.isWatched());
-                        }
-                    }
+    private void setRatingAndWatched(List<EpisodeResource> episodeResources, List<Episode> episodes) {
+        if (!CollectionUtils.isEmpty(episodes)) {
+            episodes.forEach(episode -> {
+                EpisodeResource episodeResource = getEpisodeResource(episodeResources, episode.getNumber());
+
+                if (episodeResource != null) {
+                    episode.setRating(episodeResource.getRating());
+                    episode.setWatched(episodeResource.isWatched());
                 }
             });
         }
+    }
+
+    private EpisodeResource getEpisodeResource(List<EpisodeResource> episodeResources, Integer number) {
+        if (!CollectionUtils.isEmpty(episodeResources)) {
+            for (EpisodeResource episodeResource : episodeResources) {
+                if (number.equals(episodeResource.getNumber())) {
+                    return episodeResource;
+                }
+            }
+        }
+        return null;
     }
 }
