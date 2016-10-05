@@ -58,6 +58,8 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         } catch (HttpStatusCodeException ex) {
             log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
                     ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error requesting Omdb API, Message: {}", ex.getMessage());
         }
 
         return resource;
@@ -84,6 +86,8 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         } catch (HttpStatusCodeException ex) {
             log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
                     ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error requesting Omdb API, Message: {}", ex.getMessage());
         }
 
         return resource;
@@ -109,6 +113,8 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         } catch (HttpStatusCodeException ex) {
             log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
                     ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error requesting Omdb API, Message: {}", ex.getMessage());
         }
 
         return resource;
@@ -133,6 +139,8 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
         } catch (HttpStatusCodeException ex) {
             log.error("Error requesting Omdb API, Status Code: {},  Message: {}, Response: {}",
                     ex.getStatusCode(), ex.getMessage(), ex.getResponseBodyAsString());
+        } catch (Exception ex) {
+            log.error("Error requesting Omdb API, Message: {}", ex.getMessage());
         }
 
         return resource;

@@ -29,8 +29,8 @@ public class SeasonFacadeImpl implements SeasonFacade {
     private SeasonResourceAssembler seasonResourceAssembler;
 
     @Override
-    public SeasonResource create(String title, Integer number, SeasonResource resource) {
-        Season season = this.getSeason(title, number, resource);
+    public SeasonResource create(String title, SeasonResource resource) {
+        Season season = this.getSeason(title, resource);
         Season createdSeason = seasonService.create(season);
 
         return seasonResourceAssembler.toResource(createdSeason);
@@ -38,23 +38,23 @@ public class SeasonFacadeImpl implements SeasonFacade {
 
     @Override
     public SeasonResource update(String title, Integer number, SeasonResource resource) {
-        Season season = this.getSeason(title, number, resource);
+        Season season = this.getSeason(title, resource);
         Season updatedSeason = seasonService.update(title, number, season);
 
         return seasonResourceAssembler.toResource(updatedSeason);
     }
 
-    private Season getSeason(String title, Integer number, SeasonResource resource) {
+    private Season getSeason(String title, SeasonResource resource) {
         Season season = null;
-        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(title, number);
+        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(title, resource.getNumber());
 
         if (omdbApiSeasonResource != null) {
             season = omdbSeasonResourceAssembler.toModel(omdbApiSeasonResource);
         } else {
-            season = seasonResourceAssembler.toModel(title, number, resource);
+            season = seasonResourceAssembler.toModel(resource);
         }
 
-        if (StringUtils.isNotBlank(season.getTitle())) {
+        if (StringUtils.isBlank(season.getTitle())) {
             season.setTitle(title);
         }
 

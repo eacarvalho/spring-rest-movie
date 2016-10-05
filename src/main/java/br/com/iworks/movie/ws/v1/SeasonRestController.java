@@ -32,7 +32,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/series/{title}")
+@RequestMapping("/series")
 @Api("/series")
 public class SeasonRestController {
 
@@ -53,24 +53,23 @@ public class SeasonRestController {
     })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "/seasons/{number}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{title}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> create(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
-                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number,
-                                                 @ApiParam(value = "Season's json", required = false) @RequestBody @NotNull @Valid SeasonResource seasonResource) {
+                                                 @ApiParam(value = "Season's json", required = true) @RequestBody @NotNull @Valid SeasonResource seasonResource) {
 
         return ResponseEntity
                 .ok()
-                .body(facade.create(title, number, seasonResource));
+                .body(facade.create(title, seasonResource));
     }
 
-    @ApiOperation(value = "Update a new season of a serie")
+    @ApiOperation(value = "Update a season of one serie")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 409, message = "Conflict")
     })
     @ResponseBody
-    @RequestMapping(value = "/seasons/{number}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
+    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> update(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                  @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number,
@@ -81,7 +80,31 @@ public class SeasonRestController {
                 .body(facade.update(title, number, seasonResource));
     }
 
-    @ApiOperation(value = "Get the list of seasons")
+    @ApiOperation(value = "Get the list of season by title")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 204, message = "No Content"),
+            @ApiResponse(code = 400, message = "Bad Request")})
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
+            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
+            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
+                    value = "Sorting criteria in the format: property(,asc|desc). " +
+                            "Default sort order is ascending. " +
+                            "Multiple sort criteria are supported.")
+    })
+    @ResponseBody
+    @RequestMapping(value = "/{title}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<SeasonResource>> list(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
+                                                     @PageableDefault(size = 20) Pageable pageable) {
+
+        Page<Season> seasons = service.list(title, pageable);
+        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
+
+        return ResponseEntity.ok().body(resources);
+    }
+
+    @ApiOperation(value = "Get the list of all series")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
@@ -96,22 +119,21 @@ public class SeasonRestController {
     })
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<SeasonResource>> list(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
-                                                     @PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable) {
 
-        Page<Season> seasons = service.list(title, pageable);
+        Page<Season> seasons = service.list(pageable);
         Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
 
         return ResponseEntity.ok().body(resources);
     }
 
-    @ApiOperation(value = "Get a season")
+    @ApiOperation(value = "Get a list of episodes from one season")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")})
     @ResponseBody()
-    @RequestMapping(value = "/seasons/{number}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> read(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number) {
 
@@ -121,14 +143,14 @@ public class SeasonRestController {
         return ResponseEntity.ok().body(resource);
     }
 
-    @ApiOperation(value = "Delete a season")
+    @ApiOperation(value = "Delete one season of one serie")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")
     })
     @ResponseBody()
-    @RequestMapping(value = "/seasons/{number}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> delete(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                  @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number) {
 

@@ -79,6 +79,11 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     @Override
+    public Page<Season> list(Pageable pageable) {
+        return repo.findAll(pageable);
+    }
+
+    @Override
     public Season read(String title, Integer number) {
         return repo.findOne(generateId(title, number));
     }
