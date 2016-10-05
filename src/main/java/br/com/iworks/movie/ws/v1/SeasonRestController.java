@@ -24,8 +24,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/movies/{code}")
-@Api("/seasons")
+@RequestMapping("/series")
+@Api("/series")
 public class SeasonRestController {
 
     @Autowired
@@ -40,11 +40,28 @@ public class SeasonRestController {
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SeasonResource> create(@ApiParam(value = "Movie's code", required = true) @Valid @PathVariable Long code,
+    public ResponseEntity<SeasonResource> create(@ApiParam(value = "Season's json", required = true) @RequestBody @NotNull @Valid SeasonResource seasonResource) {
+
+        return ResponseEntity
+                .ok()
+                .body(seasonFacade.create(seasonResource));
+    }
+
+    @ApiOperation(value = "Update a new season of a serie")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request"),
+            @ApiResponse(code = 409, message = "Conflict")
+    })
+    @ResponseBody
+    @RequestMapping(value = "/{title}/season/{number}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SeasonResource> update(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
+                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number,
                                                  @ApiParam(value = "Season's json", required = true) @RequestBody @NotNull @Valid SeasonResource seasonResource) {
 
         return ResponseEntity
                 .ok()
-                .body(seasonFacade.create(code, seasonResource));
+                .body(seasonFacade.update(title, number, seasonResource));
     }
 }

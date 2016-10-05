@@ -28,22 +28,22 @@ public class SeasonFacadeImpl implements SeasonFacade {
     private SeasonResourceAssembler seasonResourceAssembler;
 
     @Override
-    public SeasonResource create(Long movieId, SeasonResource resource) {
-        Season season = this.getSeason(movieId, resource);
+    public SeasonResource create(SeasonResource resource) {
+        Season season = this.getSeason(resource);
         Season createdSeason = seasonService.create(season);
 
         return seasonResourceAssembler.toResource(createdSeason);
     }
 
     @Override
-    public SeasonResource update(Long movieId, SeasonResource resource) {
-        Season season = this.getSeason(movieId, resource);
-        Season updatedSeason = seasonService.update(movieId, season);
+    public SeasonResource update(String title, Integer number, SeasonResource resource) {
+        Season season = this.getSeason(resource);
+        Season updatedSeason = seasonService.update(title, number, season);
 
         return seasonResourceAssembler.toResource(updatedSeason);
     }
 
-    private Season getSeason(Long movieId, SeasonResource resource) {
+    private Season getSeason(SeasonResource resource) {
         Season season = null;
         OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(resource.getTitle(), resource.getSeason());
 
@@ -52,8 +52,6 @@ public class SeasonFacadeImpl implements SeasonFacade {
         } else {
             season = seasonResourceAssembler.toModel(resource);
         }
-
-        season.setCode(movieId);
 
         return season;
     }

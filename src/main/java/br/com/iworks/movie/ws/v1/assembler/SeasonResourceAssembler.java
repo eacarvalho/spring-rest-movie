@@ -22,7 +22,7 @@ public class SeasonResourceAssembler {
         SeasonResource resource = new SeasonResource();
 
         resource.setTitle(season.getTitle());
-        resource.setSeason(season.getSeasonNo());
+        resource.setSeason(season.getNumber());
         resource.setTotalSeasons(season.getTotalSeasons());
         resource.setEpisodes(toResource(season.getEpisodes()));
 
@@ -37,7 +37,7 @@ public class SeasonResourceAssembler {
         Season season = new Season();
 
         season.setTitle(resource.getTitle());
-        season.setSeasonNo(resource.getSeason());
+        season.setNumber(resource.getSeason());
         season.setTotalSeasons(resource.getTotalSeasons());
         season.setEpisodes(toModel(resource.getEpisodes()));
 
@@ -50,7 +50,7 @@ public class SeasonResourceAssembler {
         if (resource != null) {
             episode.setTitle(resource.getTitle());
             episode.setReleased(resource.getReleased());
-            episode.setEpisode(resource.getEpisode());
+            episode.setNumber(resource.getNumber());
             episode.setImdbRating(resource.getImdbRating());
             episode.setImdbID(resource.getImdbID());
         }
@@ -64,7 +64,7 @@ public class SeasonResourceAssembler {
         if (episode != null) {
             resource.setTitle(episode.getTitle());
             resource.setReleased(episode.getReleased());
-            resource.setEpisode(episode.getEpisode());
+            resource.setNumber(episode.getNumber());
             resource.setImdbRating(episode.getImdbRating());
             resource.setImdbID(episode.getImdbID());
         }

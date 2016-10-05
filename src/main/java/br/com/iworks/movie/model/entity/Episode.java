@@ -14,7 +14,7 @@ public class Episode {
     private String title;
     private String released;
     @NotNull(message = "{validation.notnull}")
-    private String episode;
+    private Integer number;
     private String imdbRating;
     private String imdbID;
 }

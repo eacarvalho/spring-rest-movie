@@ -16,7 +16,7 @@ public class OmdbApiEpisodeResource {
     @JsonProperty("Released")
     private String released;
     @JsonProperty("Episode")
-    private String episode;
+    private Integer episode;
     @JsonProperty("imdbRating")
     private String imdbRating;
     @JsonProperty("imdbID")

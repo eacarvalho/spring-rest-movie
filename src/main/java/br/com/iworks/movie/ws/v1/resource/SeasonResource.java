@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SeasonResource {
 
-    private Long code;
     @NotNull(message = "{validation.notnull}")
     private String title;
     @NotNull(message = "{validation.notnull}")

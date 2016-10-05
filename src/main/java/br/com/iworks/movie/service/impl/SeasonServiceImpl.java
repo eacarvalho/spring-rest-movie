@@ -13,11 +13,10 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
+import com.google.common.base.CaseFormat;
 
 import br.com.iworks.movie.exceptions.ConflictException;
 import br.com.iworks.movie.exceptions.MovieException;
-import br.com.iworks.movie.model.entity.QSeason;
 import br.com.iworks.movie.model.entity.Season;
 import br.com.iworks.movie.repository.SeasonRepository;
 import br.com.iworks.movie.service.SeasonService;
@@ -41,6 +40,8 @@ public class SeasonServiceImpl implements SeasonService {
         try {
             this.validateSeason(season);
 
+            season.setId(this.generateId(season.getTitle(), season.getNumber()));
+
             season = repo.save(season);
         } catch (Exception e) {
             throw movieException(season, e);
@@ -50,15 +51,14 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     @Override
-    public Season update(Long code, Season season) {
-        Season savedSeason = this.read(code);
+    public Season update(String title, Integer number, Season season) {
+        Season savedSeason = repo.findOne(this.generateId(title, number));
 
         if (savedSeason != null) {
             try {
                 this.validateSeason(season);
 
                 season.setId(savedSeason.getId());
-                season.setCode(savedSeason.getCode());
 
                 repo.save(season);
 
@@ -69,13 +69,6 @@ public class SeasonServiceImpl implements SeasonService {
         }
 
         return null;
-    }
-
-    @Override
-    public Season read(Long code) {
-        QSeason qSeason = QSeason.season;
-        BooleanExpression equalsCode = qSeason.code.eq(code);
-        return repo.findOne(equalsCode);
     }
 
     private void validateSeason(Season season) {
@@ -96,5 +89,9 @@ public class SeasonServiceImpl implements SeasonService {
         } else {
             return new MovieException(msgError);
         }
+    }
+
+    private String generateId(final String originalTitle, final Integer number) {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, originalTitle).concat("-").concat(number.toString()).trim();
     }
 }
