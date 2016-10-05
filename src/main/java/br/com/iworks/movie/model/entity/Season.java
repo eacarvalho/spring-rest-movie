@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @CompoundIndexes({
-        @CompoundIndex(name = "code_season_idx", def = "{'code': 1}", unique = true),
         @CompoundIndex(name = "title_number_season_idx", def = "{'title': 1, 'number': 1}", unique = true)
 })
 public class Season {

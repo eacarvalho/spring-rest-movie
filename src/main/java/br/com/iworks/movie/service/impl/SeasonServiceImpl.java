@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -71,6 +73,29 @@ public class SeasonServiceImpl implements SeasonService {
         return null;
     }
 
+    @Override
+    public Page<Season> list(String title, Pageable pageable) {
+        return repo.findByTitleIgnoreCase(title.trim(), pageable);
+    }
+
+    @Override
+    public Season read(String title, Integer number) {
+        return repo.findOne(generateId(title, number));
+    }
+
+    @Override
+    public Season delete(String title, Integer number) {
+        Season season = this.read(title, number);
+
+        if (season != null) {
+            repo.delete(season);
+
+            return season;
+        }
+
+        return null;
+    }
+
     private void validateSeason(Season season) {
         Set<ConstraintViolation<Season>> errors = validator.validate(season);
 
@@ -92,6 +117,10 @@ public class SeasonServiceImpl implements SeasonService {
     }
 
     private String generateId(final String originalTitle, final Integer number) {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, originalTitle).concat("-").concat(number.toString()).trim();
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, originalTitle.toLowerCase())
+                .concat("-")
+                .concat(number.toString())
+                .replaceAll(" ", "-")
+                .trim();
     }
 }

@@ -2,8 +2,6 @@ package br.com.iworks.movie.ws.v1.resource;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,11 +13,8 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SeasonResource {
 
-    @NotNull(message = "{validation.notnull}")
     private String title;
-    @NotNull(message = "{validation.notnull}")
-    private Integer season;
-
+    private Integer number;
     private String totalSeasons;
 
     @JsonProperty("episodes")

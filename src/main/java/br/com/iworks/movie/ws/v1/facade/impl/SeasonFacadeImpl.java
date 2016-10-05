@@ -1,5 +1,6 @@
 package br.com.iworks.movie.ws.v1.facade.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +29,8 @@ public class SeasonFacadeImpl implements SeasonFacade {
     private SeasonResourceAssembler seasonResourceAssembler;
 
     @Override
-    public SeasonResource create(SeasonResource resource) {
-        Season season = this.getSeason(resource);
+    public SeasonResource create(String title, Integer number, SeasonResource resource) {
+        Season season = this.getSeason(title, number, resource);
         Season createdSeason = seasonService.create(season);
 
         return seasonResourceAssembler.toResource(createdSeason);
@@ -37,20 +38,24 @@ public class SeasonFacadeImpl implements SeasonFacade {
 
     @Override
     public SeasonResource update(String title, Integer number, SeasonResource resource) {
-        Season season = this.getSeason(resource);
+        Season season = this.getSeason(title, number, resource);
         Season updatedSeason = seasonService.update(title, number, season);
 
         return seasonResourceAssembler.toResource(updatedSeason);
     }
 
-    private Season getSeason(SeasonResource resource) {
+    private Season getSeason(String title, Integer number, SeasonResource resource) {
         Season season = null;
-        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(resource.getTitle(), resource.getSeason());
+        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(title, number);
 
         if (omdbApiSeasonResource != null) {
             season = omdbSeasonResourceAssembler.toModel(omdbApiSeasonResource);
         } else {
-            season = seasonResourceAssembler.toModel(resource);
+            season = seasonResourceAssembler.toModel(title, number, resource);
+        }
+
+        if (StringUtils.isNotBlank(season.getTitle())) {
+            season.setTitle(title);
         }
 
         return season;

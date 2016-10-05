@@ -4,6 +4,6 @@ import br.com.iworks.movie.ws.v1.resource.SeasonResource;
 
 public interface SeasonFacade {
 
-    SeasonResource create(SeasonResource resource);
-    SeasonResource update(String title, Integer seasonNo, SeasonResource resource);
+    SeasonResource create(String title, Integer number, SeasonResource resource);
+    SeasonResource update(String title, Integer number, SeasonResource resource);
 }
