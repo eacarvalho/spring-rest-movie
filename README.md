@@ -1,4 +1,4 @@
-# Movie
+# Memo Movie
 
 [![Build Status](https://travis-ci.org/eacarvalho/spring-rest-movie.svg?branch=develop)](https://travis-ci.org/eacarvalho/spring-rest-movie)
 
