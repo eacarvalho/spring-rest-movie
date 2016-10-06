@@ -80,29 +80,7 @@ public class MovieRestController {
                 .body(movieFacade.update(code, movieResource));
     }
 
-    @ApiOperation(value = "Get the list of movies")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 204, message = "No Content"),
-            @ApiResponse(code = 400, message = "Bad Request")})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", dataType = "integer", paramType = "query", value = "Results page you want to retrieve (0..N)"),
-            @ApiImplicitParam(name = "size", dataType = "integer", paramType = "query", value = "Number of records per page."),
-            @ApiImplicitParam(name = "sort", allowMultiple = true, dataType = "string", paramType = "query",
-                    value = "Sorting criteria in the format: property(,asc|desc). " +
-                            "Default sort order is ascending. " +
-                            "Multiple sort criteria are supported.")
-    })
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<MovieResource>> list(@PageableDefault(size = 20) Pageable pageable) {
-        Page<Movie> movies = service.list(pageable);
-        Page<MovieResource> resources = movieResourceAssembler.toPage(movies);
-
-        return ResponseEntity.ok().body(resources);
-    }
-
-    @ApiOperation(value = "Get the list of movies by query filter")
+    @ApiOperation(value = "Get the list of all movies or by query filter")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
