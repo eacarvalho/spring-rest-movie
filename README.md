@@ -62,7 +62,7 @@ Using Swagger 2 to document the RESTFul API accessing http://localhost:8080/swag
 
 ```
 use movie
-
+ 
 db.createUser(
   {
     user: "mongo_movie",
