@@ -21,7 +21,7 @@ http://localhost:8080/
 - PUT     http://localhost:8080/movies/1
 - GET     http://localhost:8080/movies
 - GET     http://localhost:8080/movies/1
-- GET     http://localhost:8080/movies/filter?title=Taken
+- GET     http://localhost:8080/movies?title=Taken
 - DELETE  http://localhost:8080/movies/1
 - GET     http://localhost:8080/types
 - GET     http://localhost:8080/genres
