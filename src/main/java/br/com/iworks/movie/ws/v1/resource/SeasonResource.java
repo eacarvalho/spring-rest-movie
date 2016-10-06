@@ -20,7 +20,7 @@ public class SeasonResource {
     private String title;
 
     @NotNull(message = "{validation.notnull}")
-    private Integer number;
+    private Integer season;
     private String totalSeasons;
 
     @Min(value = 0, message = "{validation.size}")

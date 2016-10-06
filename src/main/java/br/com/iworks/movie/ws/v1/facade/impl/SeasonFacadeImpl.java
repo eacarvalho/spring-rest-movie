@@ -51,7 +51,7 @@ public class SeasonFacadeImpl implements SeasonFacade {
 
     private Season getSeason(String title, SeasonResource resource) {
         Season season = null;
-        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(title, resource.getNumber());
+        OmdbApiSeasonResource omdbApiSeasonResource = omdbApiService.findSeason(title, resource.getSeason());
 
         if (omdbApiSeasonResource != null) {
             season = omdbSeasonResourceAssembler.toModel(omdbApiSeasonResource);

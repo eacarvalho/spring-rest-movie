@@ -27,7 +27,7 @@ public class SeasonResourceAssembler {
         SeasonResource resource = new SeasonResource();
 
         resource.setTitle(season.getTitle());
-        resource.setNumber(season.getNumber());
+        resource.setSeason(season.getNumber());
         resource.setTotalSeasons(season.getTotalSeasons());
         resource.setRating(season.getRating());
         resource.setEpisodes(toResource(season.getEpisodes()));
@@ -43,7 +43,7 @@ public class SeasonResourceAssembler {
         Season season = new Season();
 
         season.setTitle(resource.getTitle());
-        season.setNumber(resource.getNumber());
+        season.setNumber(resource.getSeason());
         season.setTotalSeasons(resource.getTotalSeasons());
         season.setRating(resource.getRating());
         season.setEpisodes(toModel(resource.getEpisodes()));

@@ -1,5 +1,6 @@
 package br.com.iworks.movie.ws.v1;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
@@ -46,7 +47,7 @@ public class OmdbRestController {
                 .body(service.findMovie(null, title, null));
     }
 
-    @ApiOperation(value = "Get movie detail by Omdb API using filter - http://www.omdbapi.com/")
+    @ApiOperation(value = "Get movie detail by Omdb API using query filter - http://www.omdbapi.com/")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
@@ -57,7 +58,7 @@ public class OmdbRestController {
             @ApiImplicitParam(name = "imdbID", value = "Movie's imdb", required = false, dataType = "string", paramType = "query")
     })
     @ResponseBody
-    @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OmdbApiResource> listByFilter(WebRequest webRequest) {
 
         String title = webRequest.getParameter("title");
@@ -69,21 +70,15 @@ public class OmdbRestController {
                 .body(service.findMovie(imdbID, title, year));
     }
 
-    @ApiOperation(value = "Get season detail by Omdb API using filter - http://www.omdbapi.com/")
+    @ApiOperation(value = "Get series's season detail by Omdb API - http://www.omdbapi.com/")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
             @ApiResponse(code = 400, message = "Bad Request")})
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "title", value = "Serie's english title", required = false, dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "season", value = "Serie's season number", required = false, dataType = "integer", paramType = "query")
-    })
     @ResponseBody
-    @RequestMapping(value = "/season/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<OmdbApiSeasonResource> listSerieByFilter(WebRequest webRequest) {
-
-        String title = webRequest.getParameter("title");
-        Integer season = StringUtils.isNotBlank(webRequest.getParameter("season")) ? Integer.parseInt(webRequest.getParameter("season")) : null;
+    @RequestMapping(value = "/{title}/seasons/{season}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OmdbApiSeasonResource> listSerieByNameAndSeason(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
+                                                                          @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
         return ResponseEntity
                 .ok()

@@ -69,15 +69,15 @@ public class SeasonRestController {
             @ApiResponse(code = 409, message = "Conflict")
     })
     @ResponseBody
-    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
+    @RequestMapping(value = "/{title}/seasons/{season}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> update(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
-                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number,
+                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season,
                                                  @ApiParam(value = "Season's json", required = true) @RequestBody @NotNull @Valid SeasonResource seasonResource) {
 
         return ResponseEntity
                 .ok()
-                .body(facade.update(title, number, seasonResource));
+                .body(facade.update(title, season, seasonResource));
     }
 
     @ApiOperation(value = "Get the list of season by title")
@@ -133,12 +133,11 @@ public class SeasonRestController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")})
     @ResponseBody()
-    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{title}/seasons/{season}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> read(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
-                                               @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number) {
+                                               @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        Season season = service.read(title, number);
-        SeasonResource resource = seasonResourceAssembler.toResource(season);
+        SeasonResource resource = seasonResourceAssembler.toResource(service.read(title, season));
 
         return ResponseEntity.ok().body(resource);
     }
@@ -150,11 +149,11 @@ public class SeasonRestController {
             @ApiResponse(code = 404, message = "Not Found")
     })
     @ResponseBody()
-    @RequestMapping(value = "/{title}/seasons/{number}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{title}/seasons/{season}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SeasonResource> delete(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
-                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer number) {
+                                                 @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, number));
+        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, season));
 
         return ResponseEntity.ok().body(resource);
     }

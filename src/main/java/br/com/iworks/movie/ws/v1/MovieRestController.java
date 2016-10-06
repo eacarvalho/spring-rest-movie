@@ -102,7 +102,7 @@ public class MovieRestController {
         return ResponseEntity.ok().body(resources);
     }
 
-    @ApiOperation(value = "Get the list of movies by filter")
+    @ApiOperation(value = "Get the list of movies by query filter")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 204, message = "No Content"),
@@ -119,7 +119,7 @@ public class MovieRestController {
                             "Multiple sort criteria are supported.")
     })
     @ResponseBody
-    @RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<MovieResource>> listByFilter(WebRequest webRequest, @PageableDefault(size = 20) Pageable pageable) {
         MovieResource movieResource = new MovieResource();
 
