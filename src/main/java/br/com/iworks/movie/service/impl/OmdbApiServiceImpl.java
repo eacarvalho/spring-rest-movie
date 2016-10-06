@@ -23,19 +23,19 @@ public class OmdbApiServiceImpl implements OmdbApiService {
     public OmdbApiResource findMovie(String imdbID, String originalTitle, Integer year) {
         OmdbApiResource omdbApiResource = null;
 
-        if (StringUtils.isNoneBlank(imdbID)) {
+        if (StringUtils.isNotBlank(imdbID)) {
             omdbApiResource = omdbApiGateway.findByImdbID(imdbID);
         }
 
-        if (isNull(omdbApiResource) && StringUtils.isNoneBlank(originalTitle) && year != null) {
+        if (isNull(omdbApiResource) && StringUtils.isNotBlank(originalTitle) && year != null) {
             omdbApiResource = omdbApiGateway.findByTitleAndYear(this.getFormatTitle(originalTitle), year);
         }
 
-        if (isNull(omdbApiResource) && StringUtils.isNoneBlank(originalTitle)) {
+        if (isNull(omdbApiResource) && StringUtils.isNotBlank(originalTitle)) {
             omdbApiResource = omdbApiGateway.findByTitle(this.getFormatTitle(originalTitle));
         }
 
-        return isNull(omdbApiResource) ? omdbApiResource : null;
+        return isNull(omdbApiResource) ? null : omdbApiResource;
     }
 
     @Override
@@ -46,18 +46,18 @@ public class OmdbApiServiceImpl implements OmdbApiService {
             omdbApiSeasonResource = omdbApiGateway.findSerieByTitleAndSeason(this.getFormatTitle(title), season);
         }
 
-        return isNull(omdbApiSeasonResource) ? omdbApiSeasonResource : null;
+        return isNull(omdbApiSeasonResource) ? null : omdbApiSeasonResource;
     }
 
     private boolean isNull(final OmdbApiResource omdbApiResource) {
-        return omdbApiResource == null || StringUtils.isNotBlank(omdbApiResource.getTitle());
+        return omdbApiResource == null || StringUtils.isBlank(omdbApiResource.getTitle());
     }
 
     private boolean isNull(final OmdbApiSeasonResource omdbApiSeasonResource) {
-        return omdbApiSeasonResource == null || StringUtils.isNotBlank(omdbApiSeasonResource.getTitle());
+        return omdbApiSeasonResource == null || StringUtils.isBlank(omdbApiSeasonResource.getTitle());
     }
 
     private String getFormatTitle(final String originalTitle) {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, originalTitle).replaceAll("-", " ").trim();
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, originalTitle.toLowerCase()).replaceAll("-", " ").trim();
     }
 }
