@@ -249,7 +249,7 @@ public class MovieServiceImplTest {
     private Movie getMovie() {
         Movie movie = new Movie();
 
-        movie.setTitle("Tittle test");
+        movie.setTitle("Title test");
         movie.setOriginalTitle("Original title test");
         movie.setPlot("Plot");
         movie.setDuration("116");
