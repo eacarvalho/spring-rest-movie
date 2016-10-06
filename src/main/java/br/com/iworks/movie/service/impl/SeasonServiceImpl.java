@@ -105,8 +105,7 @@ public class SeasonServiceImpl implements SeasonService {
         Set<ConstraintViolation<Season>> errors = validator.validate(season);
 
         if (!CollectionUtils.isEmpty(errors)) {
-            String error = errors.stream().map(err -> err.getPropertyPath() + " : " + err.getMessage()).collect
-                    (Collectors.joining(" | "));
+            String error = errors.stream().map(err -> err.getPropertyPath() + " : " + err.getMessage()).collect(Collectors.joining(" | "));
             throw new MovieException(error);
         }
     }

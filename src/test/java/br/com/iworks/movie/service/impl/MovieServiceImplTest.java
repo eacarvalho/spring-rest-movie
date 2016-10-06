@@ -24,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.google.common.collect.Lists;
 
+import br.com.iworks.movie.exceptions.ConflictException;
 import br.com.iworks.movie.exceptions.MovieException;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.TypeEnum;
@@ -98,6 +100,15 @@ public class MovieServiceImplTest {
 
         verify(counterService, never()).getNextSequence(Movie.COLLECTION_NAME);
         verify(repo, never()).save(any(Movie.class));
+    }
+
+    @Test(expected = ConflictException.class)
+    public void errorDuplicateKeyCreateSeason() throws Exception {
+        Movie mockMovie = this.getMovie();
+
+        when(repo.save(any(Movie.class))).thenThrow(new DuplicateKeyException("409"));
+
+        service.create(mockMovie);
     }
 
     @Test
@@ -238,7 +249,7 @@ public class MovieServiceImplTest {
     private Movie getMovie() {
         Movie movie = new Movie();
 
-        movie.setTitle("Tittle test");
+        movie.setTitle("Title test");
         movie.setOriginalTitle("Original title test");
         movie.setPlot("Plot");
         movie.setDuration("116");
