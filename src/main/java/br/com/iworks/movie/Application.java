@@ -3,6 +3,7 @@ package br.com.iworks.movie;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
+import br.com.iworks.movie.config.CorsConfiguration;
 import br.com.iworks.movie.config.JsonConfiguration;
 import br.com.iworks.movie.config.ModuleConfiguration;
 import br.com.iworks.movie.config.RestTemplateConfiguration;
@@ -20,6 +21,7 @@ public class Application {
                 ModuleConfiguration.class,
                 JsonConfiguration.class,
                 RestTemplateConfiguration.class,
+                CorsConfiguration.class,
                 Swagger2Configuration.class).run(args);
     }
 }
