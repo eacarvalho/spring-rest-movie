@@ -19,7 +19,7 @@ import br.com.iworks.movie.ws.v1.resource.SeasonResource;
 @Component
 public class SeasonResourceAssembler {
 
-    public SeasonResource toResource(Season season) {
+    public SeasonResource toResource(Season season, boolean expand) {
         if (season == null) {
             throw new ResourceNotFoundException("Season not found");
         }
@@ -30,7 +30,10 @@ public class SeasonResourceAssembler {
         resource.setSeason(season.getNumber());
         resource.setTotalSeasons(season.getTotalSeasons());
         resource.setRating(season.getRating());
-        resource.setEpisodes(toResource(season.getEpisodes()));
+
+        if (expand) {
+            resource.setEpisodes(toResource(season.getEpisodes()));
+        }
 
         return resource;
     }
@@ -51,7 +54,7 @@ public class SeasonResourceAssembler {
         return season;
     }
 
-    public Page<SeasonResource> toPage(Page<Season> seasonPage) {
+    public Page<SeasonResource> toPage(Page<Season> seasonPage, boolean expand) {
         if (seasonPage == null || CollectionUtils.isEmpty(seasonPage.getContent())) {
             throw new ListNotFoundException("Seasons not found");
         }
@@ -59,7 +62,7 @@ public class SeasonResourceAssembler {
         List<SeasonResource> resources = new ArrayList<>();
 
         if (seasonPage.hasContent()) {
-            seasonPage.getContent().forEach(movie -> resources.add(toResource(movie)));
+            seasonPage.getContent().forEach(movie -> resources.add(toResource(movie, expand)));
         }
 
         return new PageImpl<>(resources, new PageRequest(seasonPage.getNumber(), seasonPage.getSize(), seasonPage.getSort()), seasonPage.getTotalElements());

@@ -99,7 +99,7 @@ public class SeasonRestController {
                                                      @PageableDefault(size = 20) Pageable pageable) {
 
         Page<Season> seasons = service.list(title, pageable);
-        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
+        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons, true);
 
         return ResponseEntity.ok().body(resources);
     }
@@ -119,10 +119,11 @@ public class SeasonRestController {
     })
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable,
+                                                        @ApiParam(value = "Return serie' episodes", required = false, defaultValue = "true") @Valid boolean expand) {
 
         Page<Season> seasons = service.list(pageable);
-        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
+        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons, expand);
 
         return ResponseEntity.ok().body(resources);
     }
@@ -137,7 +138,7 @@ public class SeasonRestController {
     public ResponseEntity<SeasonResource> read(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        SeasonResource resource = seasonResourceAssembler.toResource(service.read(title, season));
+        SeasonResource resource = seasonResourceAssembler.toResource(service.read(title, season), true);
 
         return ResponseEntity.ok().body(resource);
     }
@@ -153,7 +154,7 @@ public class SeasonRestController {
     public ResponseEntity<SeasonResource> delete(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                  @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, season));
+        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, season), true);
 
         return ResponseEntity.ok().body(resource);
     }
