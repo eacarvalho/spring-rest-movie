@@ -10,13 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.iworks.movie.model.entity.Season;
 import br.com.iworks.movie.service.SeasonService;
@@ -99,7 +93,7 @@ public class SeasonRestController {
                                                      @PageableDefault(size = 20) Pageable pageable) {
 
         Page<Season> seasons = service.list(title, pageable);
-        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons, true);
+        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
 
         return ResponseEntity.ok().body(resources);
     }
@@ -120,7 +114,7 @@ public class SeasonRestController {
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable,
-                                                        @ApiParam(value = "Return serie' episodes", required = false, defaultValue = "true") @Valid boolean expand) {
+                                                        @ApiParam(value = "Return serie' episodes", required = false, defaultValue = "true") @Valid @RequestParam boolean expand) {
 
         Page<Season> seasons = service.list(pageable);
         Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons, expand);
@@ -138,7 +132,7 @@ public class SeasonRestController {
     public ResponseEntity<SeasonResource> read(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        SeasonResource resource = seasonResourceAssembler.toResource(service.read(title, season), true);
+        SeasonResource resource = seasonResourceAssembler.toResource(service.read(title, season));
 
         return ResponseEntity.ok().body(resource);
     }
@@ -154,7 +148,7 @@ public class SeasonRestController {
     public ResponseEntity<SeasonResource> delete(@ApiParam(value = "Serie's title", required = true) @Valid @PathVariable String title,
                                                  @ApiParam(value = "Serie's season", required = true) @Valid @PathVariable Integer season) {
 
-        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, season), true);
+        SeasonResource resource = seasonResourceAssembler.toResource(service.delete(title, season));
 
         return ResponseEntity.ok().body(resource);
     }

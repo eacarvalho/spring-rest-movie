@@ -1,20 +1,19 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
 import br.com.iworks.movie.exceptions.ListNotFoundException;
 import br.com.iworks.movie.exceptions.ResourceNotFoundException;
 import br.com.iworks.movie.model.entity.Episode;
 import br.com.iworks.movie.model.entity.Season;
 import br.com.iworks.movie.ws.v1.resource.EpisodeResource;
 import br.com.iworks.movie.ws.v1.resource.SeasonResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class SeasonResourceAssembler {
@@ -54,6 +53,10 @@ public class SeasonResourceAssembler {
         return season;
     }
 
+    public SeasonResource toResource(Season season) {
+        return this.toResource(season, true);
+    }
+
     public Page<SeasonResource> toPage(Page<Season> seasonPage, boolean expand) {
         if (seasonPage == null || CollectionUtils.isEmpty(seasonPage.getContent())) {
             throw new ListNotFoundException("Seasons not found");
@@ -66,6 +69,10 @@ public class SeasonResourceAssembler {
         }
 
         return new PageImpl<>(resources, new PageRequest(seasonPage.getNumber(), seasonPage.getSize(), seasonPage.getSort()), seasonPage.getTotalElements());
+    }
+
+    public Page<SeasonResource> toPage(Page<Season> seasonPage) {
+        return this.toPage(seasonPage, true);
     }
 
     private Episode toModel(final EpisodeResource resource) {
