@@ -10,13 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.iworks.movie.model.entity.Season;
 import br.com.iworks.movie.service.SeasonService;
@@ -119,10 +113,11 @@ public class SeasonRestController {
     })
     @ResponseBody
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<SeasonResource>> listAll(@PageableDefault(size = 20) Pageable pageable,
+                                                        @ApiParam(value = "Return serie' episodes", required = false, defaultValue = "true") @Valid @RequestParam boolean expand) {
 
         Page<Season> seasons = service.list(pageable);
-        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons);
+        Page<SeasonResource> resources = seasonResourceAssembler.toPage(seasons, expand);
 
         return ResponseEntity.ok().body(resources);
     }
