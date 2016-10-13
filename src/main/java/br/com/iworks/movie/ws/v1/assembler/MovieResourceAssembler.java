@@ -80,7 +80,7 @@ public class MovieResourceAssembler {
         movie.setTitle(resource.getTitle());
         movie.setOriginalTitle(resource.getOriginalTitle());
         movie.setDuration(resource.getDuration());
-        movie.setType(TypeEnum.valueOf(resource.getType().toString()));
+        movie.setType(resource.getType() != null ? TypeEnum.valueOf(resource.getType().toString()) : null);
         movie.setGenres(resource.getGenres());
         movie.setReleasedDate(resource.getReleasedDate());
         movie.setYear(resource.getYear());
