@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 
 import br.com.iworks.movie.exceptions.ListNotFoundException;
 import br.com.iworks.movie.exceptions.ResourceNotFoundException;
+import br.com.iworks.movie.model.TypeEnum;
 import br.com.iworks.movie.model.entity.Movie;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
 
@@ -79,7 +80,7 @@ public class MovieResourceAssembler {
         movie.setTitle(resource.getTitle());
         movie.setOriginalTitle(resource.getOriginalTitle());
         movie.setDuration(resource.getDuration());
-        movie.setType(resource.getType());
+        movie.setType(TypeEnum.valueOf(resource.getType().toString()));
         movie.setGenres(resource.getGenres());
         movie.setReleasedDate(resource.getReleasedDate());
         movie.setYear(resource.getYear());

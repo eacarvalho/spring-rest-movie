@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TypeEnum {
     MOVIE("Movie"),
-    SERIE("Series"),
+    SERIE("Serie"),
     EPISODE("Episode"),
     CARTOONS("Cartoons");
 
