@@ -22,7 +22,7 @@ public enum TypeEnum {
         TypeEnum[] types = TypeEnum.values();
 
         for (TypeEnum type : types) {
-            if (description.toLowerCase().contains(type.getDescription().toLowerCase())) {
+            if (description != null && description.toLowerCase().contains(type.getDescription().toLowerCase())) {
                 return type;
             }
         }
