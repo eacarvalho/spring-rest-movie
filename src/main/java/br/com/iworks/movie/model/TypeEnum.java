@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TypeEnum {
     MOVIE("Movie"),
-    SERIE("Series"),
+    SERIE("Serie"),
     EPISODE("Episode"),
     CARTOONS("Cartoons");
 
@@ -22,8 +22,7 @@ public enum TypeEnum {
         TypeEnum[] types = TypeEnum.values();
 
         for (TypeEnum type : types) {
-            if (type.getDescription().equalsIgnoreCase(description) ||
-                    type.getDescription().toLowerCase().contains(description.toLowerCase())) {
+            if (description.toLowerCase().contains(type.getDescription().toLowerCase())) {
                 return type;
             }
         }
