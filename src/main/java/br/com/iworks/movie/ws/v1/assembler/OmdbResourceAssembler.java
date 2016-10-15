@@ -1,5 +1,13 @@
 package br.com.iworks.movie.ws.v1.assembler;
 
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import br.com.iworks.movie.model.entity.Movie;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,15 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import br.com.iworks.movie.model.entity.Movie;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
@@ -38,7 +37,7 @@ public class OmdbResourceAssembler {
         movie.setDirector(resource.getDirector());
         movie.setReleasedDate(getReleasedDate(resource.getReleased()));
         movie.setPoster(resource.getPoster());
-        movie.setYear(this.getYear(resource.getYear()));
+        movie.setYear(resource.getYear());
 
         if (StringUtils.isNoneBlank(resource.getGenre())) {
             String[] genres = resource.getGenre().split(",");
@@ -54,7 +53,7 @@ public class OmdbResourceAssembler {
         return movie;
     }
 
-    private Date getReleasedDate(String releasedDate) {
+    public Date getReleasedDate(String releasedDate) {
         Date date = null;
         if (StringUtils.isNotBlank(releasedDate)) {
             try {
@@ -65,17 +64,5 @@ public class OmdbResourceAssembler {
             }
         }
         return date;
-    }
-
-    private Integer getYear(String resourceYear) {
-        Integer year = null;
-        if (StringUtils.isNoneBlank(resourceYear)) {
-            try {
-                year = Integer.parseInt(resourceYear);
-            } catch (Exception e) {
-                log.error("Error converting year {}", resourceYear);
-            }
-        }
-        return year;
     }
 }
