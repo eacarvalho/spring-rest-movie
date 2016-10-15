@@ -66,7 +66,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
     }
 
     @Override
-    public OmdbApiResource findByTitleAndYear(String title, Integer year) {
+    public OmdbApiResource findByTitleAndYear(String title, String year) {
         OmdbApiResource resource = new OmdbApiResource();
 
         try {

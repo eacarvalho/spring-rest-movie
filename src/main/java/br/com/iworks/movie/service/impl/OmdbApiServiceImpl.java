@@ -20,7 +20,7 @@ public class OmdbApiServiceImpl implements OmdbApiService {
     private OmdbApiGateway omdbApiGateway;
 
     @Override
-    public OmdbApiResource findMovie(String imdbID, String originalTitle, Integer year) {
+    public OmdbApiResource findMovie(String imdbID, String originalTitle, String year) {
         OmdbApiResource omdbApiResource = null;
 
         if (StringUtils.isNotBlank(imdbID)) {

@@ -46,9 +46,7 @@ public class Movie {
     private Date createdDate;
     private Date releasedDate;
 
-    @Min(value = 1800, message = "{validation.size}")
-    @Max(value = 3000, message = "{validation.size}")
-    private Integer year;
+    private String year;
 
     @NotNull(message = "{validation.notnull}")
     private String plot;

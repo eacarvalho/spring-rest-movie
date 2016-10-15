@@ -1,21 +1,10 @@
 package br.com.iworks.movie.service.impl;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
+import br.com.iworks.movie.config.JsonConfiguration;
+import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
+import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
+import br.com.iworks.movie.util.JsonHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,11 +12,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import br.com.iworks.movie.config.JsonConfiguration;
-import br.com.iworks.movie.gateway.omdb.OmdbApiGateway;
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
-import br.com.iworks.movie.gateway.omdb.resource.OmdbApiSeasonResource;
-import br.com.iworks.movie.util.JsonHelper;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OmdbApiServiceImplTest {
@@ -55,7 +50,7 @@ public class OmdbApiServiceImplTest {
         OmdbApiResource resource = service.findMovie(imdbID, null, null);
 
         verify(omdbApiGateway, times(1)).findByImdbID(imdbID);
-        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyInt());
+        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyString());
         verify(omdbApiGateway, never()).findByTitle(anyString());
         assertResourceApi(resource);
     }
@@ -64,7 +59,7 @@ public class OmdbApiServiceImplTest {
     public void successFindMovieByTitleAndYear() throws Exception {
         OmdbApiResource mockOmdbApiResource = this.getOmdbApiResource();
         String title = "Better Call Saul";
-        Integer year = 2015;
+        String year = "2015";
 
         when(omdbApiGateway.findByTitleAndYear(title.toLowerCase(), year)).thenReturn(mockOmdbApiResource);
 
@@ -86,7 +81,7 @@ public class OmdbApiServiceImplTest {
         OmdbApiResource resource = service.findMovie(null, title, null);
 
         verify(omdbApiGateway, never()).findByImdbID(anyString());
-        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyInt());
+        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyString());
         verify(omdbApiGateway, times(1)).findByTitle(title.toLowerCase());
         assertResourceApi(resource);
     }
@@ -100,7 +95,7 @@ public class OmdbApiServiceImplTest {
         OmdbApiResource resource = service.findMovie(null, title, null);
 
         verify(omdbApiGateway, never()).findByImdbID(anyString());
-        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyInt());
+        verify(omdbApiGateway, never()).findByTitleAndYear(anyString(), anyString());
         verify(omdbApiGateway, times(1)).findByTitle(title.toLowerCase());
         assertNull(resource);
     }

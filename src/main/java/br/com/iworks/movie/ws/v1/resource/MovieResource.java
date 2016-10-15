@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,9 +34,8 @@ public class MovieResource {
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     private Date releasedDate;
 
-    @Min(value = 1800, message = "{validation.size}")
-    @Max(value = 3000, message = "{validation.size}")
-    private Integer year;
+    @NotNull(message = "{validation.notnull}")
+    private String year;
 
     private String plot;
     private String director;
