@@ -53,7 +53,7 @@ public class OmdbResourceAssembler {
         return movie;
     }
 
-    public Date getReleasedDate(String releasedDate) {
+    private Date getReleasedDate(String releasedDate) {
         Date date = null;
         if (StringUtils.isNotBlank(releasedDate)) {
             try {

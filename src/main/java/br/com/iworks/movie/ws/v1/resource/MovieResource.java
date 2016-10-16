@@ -34,7 +34,6 @@ public class MovieResource {
     @JsonSerialize(using = JsonDateTimeSerializer.class)
     private Date releasedDate;
 
-    @NotNull(message = "{validation.notnull}")
     private String year;
 
     private String plot;

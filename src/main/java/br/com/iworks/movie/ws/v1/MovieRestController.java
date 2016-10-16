@@ -3,6 +3,7 @@ package br.com.iworks.movie.ws.v1;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,7 +46,7 @@ public class MovieRestController {
     private MovieService service;
 
     @Autowired
-    private MovieResourceAssembler movieResourceAssembler;
+    private MovieResourceAssembler resourceAssembler;
 
     @ApiOperation(value = "Create a new movie")
     @ApiResponses(value = {
@@ -53,14 +54,25 @@ public class MovieRestController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 409, message = "Conflict")
     })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accessImdb", value = "Save movie based on Imdb API", required = false, defaultValue = "true", dataType = "boolean", paramType = "query")
+    })
     @ResponseBody
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MovieResource> create(@ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
-        return ResponseEntity
-                .ok()
-                .body(movieFacade.create(movieResource));
+    public ResponseEntity<MovieResource> create(@ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource, WebRequest webRequest) {
+
+        MovieResource resource = null;
+        String accessImdb = webRequest.getParameter("accessImdb");
+
+        if (StringUtils.isNotBlank(accessImdb) && accessImdb.equalsIgnoreCase("false")) {
+            resource = resourceAssembler.toResource(service.create(resourceAssembler.toModel(movieResource)));
+        } else {
+            resource = movieFacade.create(movieResource);
+        }
+
+        return ResponseEntity.ok().body(resource);
     }
 
     @ApiOperation(value = "Update a movie")
@@ -69,15 +81,26 @@ public class MovieRestController {
             @ApiResponse(code = 400, message = "Bad Request"),
             @ApiResponse(code = 404, message = "Not Found")
     })
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accessImdb", value = "Update movie based on Imdb API", required = false, defaultValue = "true", dataType = "boolean", paramType = "query")
+    })
     @ResponseBody
     @RequestMapping(value = "/{code}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MovieResource> update(@ApiParam(value = "Movie's code", required = true) @Valid @PathVariable Long code,
-                                                @ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource) {
+                                                @ApiParam(value = "Movie's json", required = true) @RequestBody @NotNull @Valid MovieResource movieResource,
+                                                WebRequest webRequest) {
 
-        return ResponseEntity
-                .ok()
-                .body(movieFacade.update(code, movieResource));
+        MovieResource resource = null;
+        String accessImdb = webRequest.getParameter("accessImdb");
+
+        if (StringUtils.isNotBlank(accessImdb) && accessImdb.equalsIgnoreCase("false")) {
+            resource = resourceAssembler.toResource(service.update(code, resourceAssembler.toModel(movieResource)));
+        } else {
+            resource = movieFacade.update(code, movieResource);
+        }
+
+        return ResponseEntity.ok().body(resource);
     }
 
     @ApiOperation(value = "Get the list of all movies or by query filter")
@@ -107,8 +130,8 @@ public class MovieRestController {
             movieResource.setType(TypeEnum.create(webRequest.getParameter("type")));
         }
 
-        Page<Movie> movies = service.list(movieResourceAssembler.toModel(movieResource), pageable);
-        Page<MovieResource> resources = movieResourceAssembler.toPage(movies);
+        Page<Movie> movies = service.list(resourceAssembler.toModel(movieResource), pageable);
+        Page<MovieResource> resources = resourceAssembler.toPage(movies);
 
         return ResponseEntity.ok().body(resources);
     }
@@ -121,7 +144,7 @@ public class MovieRestController {
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MovieResource> read(@ApiParam(value = "Movie's code", required = true) @PathVariable("code") @NotNull Long code) {
-        MovieResource resource = movieResourceAssembler.toResource(service.read(code));
+        MovieResource resource = resourceAssembler.toResource(service.read(code));
 
         return ResponseEntity.ok().body(resource);
     }
@@ -135,7 +158,7 @@ public class MovieRestController {
     @ResponseBody()
     @RequestMapping(value = "/{code}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MovieResource> delete(@ApiParam(value = "Movie's code", required = true) @PathVariable Long code) {
-        MovieResource resource = movieResourceAssembler.toResource(service.delete(code));
+        MovieResource resource = resourceAssembler.toResource(service.delete(code));
 
         return ResponseEntity.ok().body(resource);
     }

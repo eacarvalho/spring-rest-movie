@@ -1,5 +1,13 @@
 package br.com.iworks.movie.ws.v1.facade.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
 import br.com.iworks.movie.gateway.omdb.resource.OmdbApiResource;
 import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.entity.Movie;
@@ -9,12 +17,6 @@ import br.com.iworks.movie.ws.v1.assembler.MovieResourceAssembler;
 import br.com.iworks.movie.ws.v1.assembler.OmdbResourceAssembler;
 import br.com.iworks.movie.ws.v1.facade.MovieFacade;
 import br.com.iworks.movie.ws.v1.resource.MovieResource;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class MovieFacadeImpl implements MovieFacade {
@@ -54,22 +56,25 @@ public class MovieFacadeImpl implements MovieFacade {
         if (omdbApiResource != null) {
             movie = omdbResourceAssembler.toModel(omdbApiResource);
 
-            movie.setTitle(StringUtils.isNotBlank(resource.getTitle()) ? resource.getTitle() : omdbApiResource.getTitle());
-            movie.setDuration(StringUtils.isNotBlank(resource.getDuration()) ? resource.getDuration() : omdbApiResource.getRuntime());
-            movie.setYear(StringUtils.isNotBlank(resource.getYear()) ? resource.getYear() : omdbApiResource.getYear());
-            movie.setPoster(StringUtils.isNotBlank(resource.getPoster()) ? resource.getPoster() : omdbApiResource.getPoster());
-            movie.setRating(resource.getRating());
-            movie.setReleasedDate(resource.getReleasedDate() != null ? resource.getReleasedDate() : omdbResourceAssembler.getReleasedDate(omdbApiResource.getReleased()));
-
-            if (resource.getGenres() != null && resource.getGenres().size() > 0) {
-                List<GenreEnum> listGenre = new ArrayList<>();
-                resource.getGenres().forEach(listGenre::add);
-                movie.setGenres(listGenre);
+            if (StringUtils.isNotBlank(resource.getTitle())) {
+                movie.setTitle(resource.getTitle());
             }
 
             if (StringUtils.isNoneBlank(resource.getPlot())) {
                 movie.setPlot(resource.getPlot());
             }
+
+            if (StringUtils.isNotBlank(resource.getPoster())) {
+                movie.setPoster(resource.getPoster());
+            }
+
+            if (!CollectionUtils.isEmpty(resource.getGenres())) {
+                List<GenreEnum> listGenre = new ArrayList<>();
+                resource.getGenres().forEach(listGenre::add);
+                movie.setGenres(listGenre);
+            }
+
+            movie.setRating(resource.getRating());
         } else {
             movie = movieResourceAssembler.toModel(resource);
         }
