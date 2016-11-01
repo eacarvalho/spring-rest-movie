@@ -35,8 +35,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/movies")
-@Api("/movies")
+@RequestMapping("/api/movies")
+@Api("/api/movies")
 public class MovieRestController {
 
     @Autowired

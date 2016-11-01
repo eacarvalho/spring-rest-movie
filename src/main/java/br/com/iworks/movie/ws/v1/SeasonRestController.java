@@ -26,8 +26,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@RequestMapping("/series")
-@Api("/series")
+@RequestMapping("/api/series")
+@Api("/api/series")
 public class SeasonRestController {
 
     @Autowired

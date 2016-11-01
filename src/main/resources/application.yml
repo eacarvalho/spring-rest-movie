@@ -3,6 +3,8 @@ spring:
   data:
     mongodb:
       uri: mongodb://mongo_movie:123@localhost:27017/movie
+  security:
+    enabled: false
 
 info:
   app:

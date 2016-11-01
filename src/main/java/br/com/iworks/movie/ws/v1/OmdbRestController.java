@@ -14,8 +14,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @RestController
-@RequestMapping("/omdb-movies")
-@Api("/omdb-movies")
+@RequestMapping("/api/omdb-movies")
+@Api("/api/omdb-movies")
 public class OmdbRestController {
 
     @Autowired
