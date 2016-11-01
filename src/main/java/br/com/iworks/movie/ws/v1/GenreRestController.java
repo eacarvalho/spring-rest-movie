@@ -10,8 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/genres")
-@Api("/genres")
+@RequestMapping("/api/genres")
+@Api("/api/genres")
 public class GenreRestController {
 
     @ApiOperation(value = "Get the list of genres")
