@@ -1,3 +1,5 @@
+https://spring.io/guides/tutorials/spring-boot-oauth2/
+
 curl -u fish:memory http://10.0.82.13:8080/oauth/token -d grant_type=client_credentials
 curl -u fish:memory http://10.0.82.13:8080/oauth/token -d grant_type=password -d username=user -d password=password
 curl -u fish:memory http://10.0.82.13:8080/oauth/token -d "grant_type=refresh_token&refresh_token=f1445746-b240-4dfd-9b19-f912aad9cb05
