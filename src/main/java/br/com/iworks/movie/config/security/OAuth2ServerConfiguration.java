@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableOAuth2Client
 @EnableAuthorizationServer
 @Order(6)
-public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdapter {
+public class OAuth2ServerConfiguration /* extends AuthorizationServerConfigurerAdapter */ {
 
+    /*
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -30,8 +31,6 @@ public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // clients.withClientDetails(clientDetailsService);
-
         clients.inMemory()
                 .withClient("fish")
                 .secret("memory")
@@ -41,4 +40,5 @@ public class OAuth2ServerConfiguration extends AuthorizationServerConfigurerAdap
                         // .resourceIds("sparklr")
                 .accessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(7));
     }
+    */
 }
