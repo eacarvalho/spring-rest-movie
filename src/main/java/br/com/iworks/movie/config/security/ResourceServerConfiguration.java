@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = false)
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-    @RequestMapping({"/user"})
+    @RequestMapping(method = RequestMethod.GET)
     public Principal user(Principal principal) {
         return principal;
     }
@@ -29,6 +30,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/api/**").authenticated()
                 .antMatchers("/user").authenticated()
-                .anyRequest().permitAll();
+                .anyRequest().permitAll()
+                .and().logout();
     }
 }

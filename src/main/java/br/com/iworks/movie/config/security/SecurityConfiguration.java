@@ -17,10 +17,7 @@ import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.web.bind.annotation.RestController;
 
 @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = false)
-@RestController
-@EnableOAuth2Client
-@EnableAuthorizationServer
-@Order(6)
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
