@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @ConditionalOnProperty(value = "spring.security.enabled", havingValue = "true", matchIfMissing = false)
 @RestController
-@EnableOAuth2Client
 @EnableAuthorizationServer
 @Order(6)
 public class OAuth2ServerConfiguration /* extends AuthorizationServerConfigurerAdapter */ {
