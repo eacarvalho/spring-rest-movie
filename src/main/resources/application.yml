@@ -4,7 +4,7 @@ spring:
     mongodb:
       uri: mongodb://mongo_movie:123@localhost:27017/movie
   security:
-    enabled: false
+    enabled: true
 
 info:
   app:
@@ -37,3 +37,16 @@ endpoints:
     id: env
     sensitive: true
     enabled: false
+
+security:
+  oauth2:
+    client:
+      client-id: fish
+      client-secret: memory
+      scope: read,write
+      auto-approve-scopes: '.*'
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
+      tokenName: oauth_token
+    resource:
+      user-info-uri: http://localhost:8080/user
