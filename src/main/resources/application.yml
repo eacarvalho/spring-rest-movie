@@ -15,6 +15,7 @@ info:
 gateway:
   omdb:
     url: http://www.omdbapi.com/
+    apiKey: ec6483bd
 
 proxy:
   enabled: false
