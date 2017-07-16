@@ -38,12 +38,16 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
     @Value("${gateway.omdb.url}")
     private String omdbUrl;
 
+    @Value("${gateway.omdb.apiKey}")
+    private String apiKey;
+
     @Override
     public OmdbApiResource findByTitle(String title) {
         OmdbApiResource resource = new OmdbApiResource();
 
         try {
             URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("apikey", apiKey)
                     .queryParam("t", title)
                     .queryParam("plot", "short")
                     .queryParam("r", "json")
@@ -71,6 +75,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
 
         try {
             URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("apikey", apiKey)
                     .queryParam("t", title)
                     .queryParam("y", year)
                     .queryParam("plot", "short")
@@ -99,6 +104,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
 
         try {
             URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("apikey", apiKey)
                     .queryParam("i", imdbID)
                     .queryParam("plot", "short")
                     .queryParam("r", "json")
@@ -126,6 +132,7 @@ public class OmdbApiGatewayImpl implements OmdbApiGateway {
 
         try {
             URI target = UriComponentsBuilder.fromUriString(omdbUrl)
+                    .queryParam("apikey", apiKey)
                     .queryParam("t", title)
                     .queryParam("Season", season)
                     .build()
