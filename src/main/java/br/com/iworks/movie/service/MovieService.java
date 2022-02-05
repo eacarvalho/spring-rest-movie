@@ -1,22 +1,93 @@
 package br.com.iworks.movie.service;
 
-import java.util.List;
+import static org.springframework.util.ObjectUtils.isEmpty;
 
+import br.com.iworks.movie.exception.ResourceNotFoundException;
+import br.com.iworks.movie.model.GenreEnum;
 import br.com.iworks.movie.model.entity.Movie;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import br.com.iworks.movie.model.resource.MovieResource;
+import br.com.iworks.movie.omdb.resource.OmdbApiResource;
+import br.com.iworks.movie.repository.MovieRepository;
+import br.com.iworks.movie.transformer.MovieResourceMapper;
+import br.com.iworks.movie.transformer.OmdbApiResourceMapper;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
-public interface MovieService {
+@AllArgsConstructor
+@Service
+public class MovieService {
 
-    Movie create(Movie movie);
+    private final MovieRepository movieRepository;
+    private final CounterService counterService;
+    private final OmdbService omdbService;
+    private final OmdbApiResourceMapper omdbApiResourceMapper;
+    private final MovieResourceMapper movieResourceMapper;
 
-    Movie update(Long code, Movie movie);
+    public Movie create(MovieResource resource, boolean accessImdb) {
+        Movie movie = this.searchOmdbMovie(resource, accessImdb);
 
-    Page<Movie> list(Pageable pageable);
+        movie.setCode(counterService.getNextSequence(Movie.COLLECTION_NAME));
+        movie.setCreatedDate(LocalDateTime.now(ZoneOffset.UTC));
 
-    Page<Movie> list(Movie movie, Pageable pageable);
+        return movieRepository.save(movie);
+    }
 
-    Movie read(Long code);
+    public Movie update(Long code, MovieResource resource, boolean accessImdb) {
+        Movie savedMovie = this.find(code);
+        Movie movie = this.searchOmdbMovie(resource, accessImdb);
 
-    Movie delete(Long code);
+        movie.setId(savedMovie.getId());
+        movie.setCode(savedMovie.getCode());
+
+        return movieRepository.save(movie);
+    }
+
+    public Movie find(Long code) {
+        return movieRepository.findByCode(code).orElseThrow(() -> new ResourceNotFoundException("Movie not found"));
+    }
+
+    public void delete(Long code) {
+        movieRepository.delete(movieRepository.findByCode(code)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie not found")));
+    }
+
+    private Movie searchOmdbMovie(MovieResource resource, boolean accessImdb) {
+        Movie movie = null;
+
+        if (accessImdb) {
+            OmdbApiResource omdbApiResource = omdbService.findMovie(resource.getImdbID(),
+                    resource.getOriginalTitle(),
+                    resource.getYear());
+
+            movie = omdbApiResourceMapper.toModel(omdbApiResource);
+        } else {
+            movie = movieResourceMapper.toModel(resource);
+        }
+
+        if (!isEmpty(resource.getTitle())) {
+            movie.setTitle(resource.getTitle());
+        }
+
+        if (!isEmpty(resource.getPlot())) {
+            movie.setPlot(resource.getPlot());
+        }
+
+        if (!isEmpty(resource.getPoster())) {
+            movie.setPoster(resource.getPoster());
+        }
+
+        if (!CollectionUtils.isEmpty(resource.getGenres())) {
+            List<GenreEnum> listGenre = new ArrayList<>(resource.getGenres());
+            movie.setGenres(listGenre);
+        }
+
+        movie.setRating(resource.getRating());
+
+        return movie;
+    }
 }

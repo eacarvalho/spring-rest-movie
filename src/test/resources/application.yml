@@ -1,26 +1,32 @@
-# MONGODB (MongoProperties)
 spring:
+  jpa:
+    open-in-view: false
   data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
     mongodb:
-      uri: mongodb://mongo_movie:123@localhost:27017/movie-itest
+      uri: mongodb://localhost:27017/movie
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+  mongodb:
+    embedded:
+      version: 4.0.12
 
-info:
-  app:
-    name: Spring Rest Movie
-    description: The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record
-    version: 0.0.1-SNAPSHOT
+gateway:
+  omdb:
+    url: http://www.omdbapi.com/
+    apiKey: a5383af4
 
-# SPRING-BOOT-ACTUATOR (http://www.javabeat.net/spring-boot-actuator)
-endpoints:
-  info:
-    id: info
-    sensitive: false
-    enabled: true
-  health:
-    id: health
-    sensitive: false
-    enabled: true
-  env:
-    id: env
-    sensitive: true
-    enabled: false
+logging:
+  level:
+    root: INFO
+    br.com.iworks: DEBUG
+    org:
+      mongodb: WARN
+      springframework:
+        boot:
+          autoconfigure:
+            mongo:
+              embedded: WARN

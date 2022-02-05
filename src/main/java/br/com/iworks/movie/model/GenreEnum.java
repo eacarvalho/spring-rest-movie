@@ -1,10 +1,5 @@
 package br.com.iworks.movie.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum GenreEnum {
     ACTION("Action"),
     ADVENTURE("Adventure"),
@@ -29,13 +24,12 @@ public enum GenreEnum {
     WAR("War"),
     WESTERN("Western");
 
-    private String description;
+    private final String description;
 
     private GenreEnum(String description) {
         this.description = description;
     }
 
-    @JsonCreator
     public static GenreEnum create(String description) {
         GenreEnum[] types = GenreEnum.values();
 
@@ -48,7 +42,6 @@ public enum GenreEnum {
         return null;
     }
 
-    @JsonValue
     public String getDescription() {
         return description;
     }

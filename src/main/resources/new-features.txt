@@ -1,2 +1,0 @@
-http://www.omdbapi.com/
-https://www.heroku.com/

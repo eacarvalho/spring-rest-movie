@@ -1,40 +1,31 @@
-# MONGODB (MongoProperties)
+# https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.3-Release-Notes#changes-to-the-default-error-pages-content
+server:
+  error:
+    include-message: always
+
 spring:
+  jpa:
+    open-in-view: false
   data:
+    jpa:
+      repositories:
+        bootstrap-mode: default
     mongodb:
-      uri: mongodb://mongo_movie:123@localhost:27017/movie
+      uri: mongodb://localhost:27017/movie
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+spring-rest-movie:
   security:
     enabled: false
-
-info:
-  app:
-    name: Spring Rest Movie
-    description: The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record
-    version: 0.0.1-SNAPSHOT
 
 gateway:
   omdb:
     url: http://www.omdbapi.com/
-    apiKey: ec6483bd
+    apiKey: a5383af4
 
-proxy:
-  enabled: false
-  host: host
-  port: 8080
-  username: username
-  password: password
-
-# SPRING-BOOT-ACTUATOR (http://www.javabeat.net/spring-boot-actuator)
-endpoints:
-  info:
-    id: info
-    sensitive: false
-    enabled: true
-  health:
-    id: health
-    sensitive: false
-    enabled: true
-  env:
-    id: env
-    sensitive: true
-    enabled: false
+logging:
+  level:
+    root: INFO
+    br.com.iworks: INFO

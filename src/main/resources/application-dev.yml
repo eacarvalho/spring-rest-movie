@@ -1,0 +1,11 @@
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  liquibase:
+    enabled: false
+  data:
+    mongodb:
+      user: mongo_movie
+      password: 123
+      uri: mongodb://localhost:27017/movie

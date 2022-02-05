@@ -1,22 +1,19 @@
 package br.com.iworks.movie.model.entity;
 
-import java.util.Date;
+import br.com.iworks.movie.model.GenreEnum;
+import br.com.iworks.movie.model.TypeEnum;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import br.com.iworks.movie.model.GenreEnum;
-import br.com.iworks.movie.model.TypeEnum;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Document(collection = Movie.COLLECTION_NAME)
 @Data
@@ -35,25 +32,25 @@ public class Movie {
 
     private Long code;
 
-    @NotNull(message = "{validation.notnull}")
+    @NotNull(message = "Title must not be null")
     private String title;
     private String originalTitle;
     private String duration;
 
-    @NotNull(message = "{validation.notnull}")
+    @NotNull(message = "Type must not be null")
     private TypeEnum type;
     private List<GenreEnum> genres;
-    private Date createdDate;
-    private Date releasedDate;
+    private LocalDateTime createdDate;
+    private LocalDate releasedDate;
 
     private String year;
 
-    @NotNull(message = "{validation.notnull}")
+    @NotNull(message = "Plot must not be null")
     private String plot;
     private String director;
 
-    @Min(value = 0, message = "{validation.size}")
-    @Max(value = 5, message = "{validation.size}")
+    @Min(value = 0, message = "Rating must be between 0 and 5")
+    @Min(value = 5, message = "Rating must be between 0 and 5")
     private int rating;
     private String imdbRating;
     private String imdbID;

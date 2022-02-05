@@ -1,6 +1,6 @@
 # Movie
 
-[![Build Status](https://travis-ci.org/eacarvalho/spring-rest-movie.svg?branch=develop)](https://travis-ci.org/eacarvalho/spring-rest-movie)
+![Build Status](https://github.com/eacarvalho/spring-rest-movie/actions/workflows/github-actions-movie.yml/badge.svg?branch=spring-boot-2-6)
 
 ## Introduction 
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
@@ -8,8 +8,8 @@ The project spring-rest-movie provides REST services for create, update, delete 
 ## Technologies
 Built using maven, java 8, spring-boot 1.4.1, spring-boot-actuator, spring-mvc, spring-data, swagger 2, querydsl and lombok accessing NoSQL MongoDB 3.0.6. 
 
-## Travis CI (Continuous Integration)
-Using Travis as CI accessing https://travis-ci.org/eacarvalho/spring-rest-movie
+## Github Actions CI (Continuous Integration)
+Using Github Actions as CI accessing https://github.com/eacarvalho/spring-rest-movie/actions
 
 ## How start the project
 mvn spring-boot:run -Dserver.port=8080
