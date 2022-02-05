@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/eacarvalho/spring-rest-movie.svg?branch=develop)](https://travis-ci.org/eacarvalho/spring-rest-movie)
 
-## Introduction
+## Introduction 
 The project spring-rest-movie provides REST services for create, update, delete and search for movies that you like and want keeping as a record.
 
 ## Technologies
